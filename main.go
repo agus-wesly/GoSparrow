@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	// "log"
 	"strings"
 	"time"
 
@@ -19,7 +18,7 @@ var tweet_results = make(map[string]TweetScrapResult)
 func main() {
 	// Disable the headless mode to see what happen.
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", false),
+		chromedp.Flag("headless", true),
 	)
 	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer acancel()
@@ -54,9 +53,9 @@ func main() {
 						panic(err)
 					}
 					json.Unmarshal(byts, &tweetJson)
-					fmt.Println("Got bytes !")
+					fmt.Println("Got response !")
 					// saveToJsonFile(byts)
-					// processTweetJSON(tweetJson)
+					processTweetJSON(tweetJson)
 				}()
 			}
 		}
@@ -72,15 +71,23 @@ func main() {
 		log.Fatalln(err)
 	}
 
-    // TODO : stop scroll when reach bottom of the page
-	for i := 0; i < 3; i++ {
+	var isAlreadyOnTheBottom bool = false
+	for !isAlreadyOnTheBottom {
 		chromedp.Run(ctx, scrollDown())
+		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
+			fmt.Println("scrolled down...")
+			return nil
+		}))
+		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
+	fmt.Println("Exporting...")
+	exportToCSV()
 }
 
 func openPage() chromedp.Tasks {
+	fmt.Println("open page")
 	// Search for request that includes : TweetDetail
-	const url string = "https://x.com/Indostransfer/status/1769976105468104944"
+	const url string = "https://x.com/GIBOLofficial/status/1868640141335842824"
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
@@ -93,7 +100,7 @@ func scrollDown() chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
 		chromedp.Evaluate(`document.querySelectorAll("a div[data-testid='tweetPhoto']").forEach((el) => el.remove())`, nil),
-		chromedp.Sleep(5 * time.Second),
+		chromedp.Sleep(3 * time.Second),
 	}
 }
 

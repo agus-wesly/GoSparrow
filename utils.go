@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 type Response struct {
@@ -142,7 +143,6 @@ func exportToCSV() {
 		res[i] = []string{val.TweetId, val.Author, val.Content}
 		i++
 	}
-	fmt.Println(len(res[1]))
 	buf := new(bytes.Buffer)
 	w := csv.NewWriter(buf)
 	w.WriteAll(res)
@@ -150,6 +150,6 @@ func exportToCSV() {
 	if err := w.Error(); err != nil {
 		log.Fatalln("error writing csv:", err)
 	}
-
-	os.WriteFile("res.csv", buf.Bytes(), 0644)
+	currentTime := time.Now().Local()
+	os.WriteFile(fmt.Sprintf("res-%d.csv", currentTime.Unix()), buf.Bytes(), 0644)
 }
