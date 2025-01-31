@@ -31,7 +31,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", false),
+		chromedp.Flag("headless", true),
 	)
 	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer acancel()
