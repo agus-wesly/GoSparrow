@@ -2,194 +2,83 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
-	"github.com/chromedp/cdproto/cdp"
-	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 )
-
-// app --tweet_url
-// choose mode
-// 1. Single Tweet Mode
-// 2. Search Mode
-
-func tweetListener(ctx context.Context, tweet_results map[string]TweetScrapResult) {
-	// Listen phase
-	var tweetRequestId network.RequestID = ""
-	chromedp.ListenTarget(ctx, func(ev interface{}) {
-		switch responseReceivedEvent := ev.(type) {
-		case *network.EventResponseReceived:
-			response := responseReceivedEvent.Response
-			if strings.Contains(response.URL, "TweetDetail") {
-				tweetRequestId = responseReceivedEvent.RequestID
-			}
-		case *network.EventLoadingFinished:
-			if tweetRequestId == "" {
-				break
-			} else {
-				tweetRequestId = ""
-				fc := chromedp.FromContext(ctx)
-				ctx2 := cdp.WithExecutor(ctx, fc.Target)
-				var tweetJson Response
-				go func() {
-					byts, err := network.GetResponseBody(responseReceivedEvent.RequestID).Do(ctx2)
-					if err != nil {
-						panic(err)
-					}
-					json.Unmarshal(byts, &tweetJson)
-					fmt.Println("Got response !")
-					// saveToJsonFile(byts)
-					processTweetJSON(tweetJson, tweet_results)
-				}()
-			}
-		}
-	})
-}
-
-func tweetActions(ctx context.Context) {
-	err := chromedp.Run(ctx,
-		authenticate("auth_token", "c9bca772a8e05e076c17da20f126d22e042dae6b"),
-		verifyLogin(),
-		openPage(),
-	)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	var isAlreadyOnTheBottom bool = false
-	for !isAlreadyOnTheBottom {
-		chromedp.Run(ctx, scrollDown())
-		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
-			fmt.Println("scrolled down...")
-			return nil
-		}))
-		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
-	}
-}
-
-func handleTweet(ctx context.Context) {
-	// another variable
-	var tweet_results = make(map[string]TweetScrapResult)
-	tweetListener(ctx, tweet_results)
-	tweetActions(ctx)
-	fmt.Println("Exporting...")
-	exportTweetToCSV(tweet_results)
-}
 
 const (
 	searchTweet = iota + 1
 	singleTweet
 )
 
+type TweetData struct {
+	auth_token  string
+	tweet_url   string
+	tweet_query string
+}
+
+var tweetData TweetData
+
+var DEBUG bool = true
+
 func main() {
 	opt, err := promptUser()
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true),
+		chromedp.Flag("headless", false),
 	)
 	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer acancel()
 	ctx, cancel := chromedp.NewContext(actx)
 	defer cancel()
-	ctx, cancel = context.WithTimeout(ctx, 100*time.Second)
-	defer cancel()
-
+	// ctx, cancel = context.WithTimeout(ctx, 50*time.Second)
+	// defer cancel()
 	if opt == singleTweet {
 		handleTweet(ctx)
 	}
-
 }
 
 func promptUser() (int, error) {
 	var userOption int
-	fmt.Println("=====CHOOSE MODE=====")
-	fmt.Println("1. Search Mode")
-	fmt.Println("2. Single Tweet Mode")
-	fmt.Print("Your Option : ")
-	fmt.Scan(&userOption)
+	if DEBUG {
+		userOption = singleTweet
+		tweetData.auth_token = "c9bca772a8e05e076c17da20f126d22e042dae6b"
+		tweetData.tweet_url = "https://x.com/rasjawa/status/1884869178123080001"
+	}
+	if !DEBUG {
+		fmt.Println("=====CHOOSE MODE=====")
+		fmt.Println("1. Search Mode")
+		fmt.Println("2. Single Tweet Mode")
+		fmt.Print("Your Option : ")
+		fmt.Scan(&userOption)
+	}
 
 	if userOption == searchTweet {
 		return 0, errors.New("Search mode is not yet implemented")
 	} else if userOption == singleTweet {
+		if !DEBUG {
+			fmt.Print("Enter your twitter auth token : ")
+			fmt.Scanln(&tweetData.auth_token)
+			fmt.Print("Enter your desired twitter url : ")
+			fmt.Scanln(&tweetData.tweet_url)
+		}
 		return singleTweet, nil
 	} else {
 		return 0, errors.New("Option provided is unknown")
 	}
 }
 
-func openPage() chromedp.Tasks {
-	fmt.Println("open page")
-	// Search for request that includes : TweetDetail
-	const url string = "https://x.com/jherr/status/1758571101964382487"
-	tasks := chromedp.Tasks{
-		network.Enable(),
-		chromedp.Navigate(url),
-		chromedp.WaitReady(`body [data-testid="tweetButtonInline"]`),
-	}
-	return tasks
-}
-
 func scrollDown() chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
 		chromedp.Evaluate(`document.querySelectorAll("a div[data-testid='tweetPhoto']").forEach((el) => el.remove())`, nil),
+		chromedp.Evaluate(`document.evaluate("//span[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
 		chromedp.Sleep(3 * time.Second),
 	}
-}
-
-func verifyLogin() chromedp.Tasks {
-	var location string
-	return chromedp.Tasks{
-		chromedp.Navigate("https://x.com/explore"),
-		chromedp.WaitReady(`body`),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			act := chromedp.Location(&location)
-			err := act.Do(ctx)
-			if err != nil {
-				return err
-			}
-			if strings.Contains(location, "login") {
-				panic("Invalid auth token")
-			}
-			return nil
-		}),
-	}
-
-}
-
-func authenticate(cookies ...string) chromedp.Tasks {
-	if len(cookies)%2 != 0 {
-		panic("Length must be divisible by 2")
-	}
-	expr := cdp.TimeSinceEpoch(time.Now().Add(3 * 24 * time.Hour))
-	return chromedp.Tasks{
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			for i := 0; i < len(cookies)-1; i++ {
-				err := network.SetCookie(cookies[i], cookies[i+1]).
-					WithDomain(".x.com").
-					WithHTTPOnly(true).
-					WithExpires(&expr).
-					WithSecure(true).
-					WithSameSite("strict").
-					WithPath("/").
-					Do(ctx)
-
-				if err != nil {
-					return err
-				}
-			}
-			return nil
-		}),
-	}
-
 }
