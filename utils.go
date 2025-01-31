@@ -93,7 +93,7 @@ type TweetScrapResult struct {
 	Content string `json:"content"`
 }
 
-func processTweetJSON(jsonData Response) {
+func processTweetJSON(jsonData Response, tweet_results map[string]TweetScrapResult) {
 	var entries []Entry
 	entries = jsonData.Data.ThreadedConversationsWithInjectionsV2.Instructions[0].Entries
 	for i := 0; i < len(entries); i++ {
@@ -101,14 +101,14 @@ func processTweetJSON(jsonData Response) {
 		var item *ItemContent
 		if currentEntryContent.ItemContent != nil {
 			item = currentEntryContent.ItemContent
-			addToTweetResult(item)
+			addToTweetResult(item, tweet_results)
 		}
 
 		if currentEntryContent.Items != nil {
 			items := *currentEntryContent.Items
 			for j := 0; j < len(items); j++ {
 				item = items[j].Item.ItemContent
-				addToTweetResult(item)
+				addToTweetResult(item, tweet_results)
 			}
 		}
 	}
@@ -121,7 +121,7 @@ func saveToJsonFile(data []byte) {
 	}
 }
 
-func addToTweetResult(item *ItemContent) {
+func addToTweetResult(item *ItemContent, tweet_results map[string]TweetScrapResult) {
 	tweet := TweetScrapResult{
 		TweetId: item.TweetResults.Result.RestId,
 		Author:  item.TweetResults.Result.Core.Results.Result.Legacy.Name,
@@ -134,7 +134,7 @@ func addToTweetResult(item *ItemContent) {
 // id,col1,col2
 // id_1,340.384926,123.285031
 // id_1,321.385028,4087.284675
-func exportToCSV() {
+func exportTweetToCSV(tweet_results map[string]TweetScrapResult) {
 	res := make([][]string, len(tweet_results)+1)
 	res[0] = []string{"Tweet_Id", "Author", "Content"}
 

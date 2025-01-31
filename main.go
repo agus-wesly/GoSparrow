@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -13,23 +14,12 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var tweet_results = make(map[string]TweetScrapResult)
+// app --tweet_url
+// choose mode
+// 1. Single Tweet Mode
+// 2. Search Mode
 
-func main() {
-	// Disable the headless mode to see what happen.
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true),
-	)
-	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
-	defer acancel()
-
-	// create instance
-	ctx, cancel := chromedp.NewContext(actx)
-	defer cancel()
-
-	ctx, cancel = context.WithTimeout(ctx, 100*time.Second)
-	defer cancel()
-
+func tweetListener(ctx context.Context, tweet_results map[string]TweetScrapResult) {
 	// Listen phase
 	var tweetRequestId network.RequestID = ""
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
@@ -55,12 +45,14 @@ func main() {
 					json.Unmarshal(byts, &tweetJson)
 					fmt.Println("Got response !")
 					// saveToJsonFile(byts)
-					processTweetJSON(tweetJson)
+					processTweetJSON(tweetJson, tweet_results)
 				}()
 			}
 		}
 	})
+}
 
+func tweetActions(ctx context.Context) {
 	err := chromedp.Run(ctx,
 		authenticate("auth_token", "c9bca772a8e05e076c17da20f126d22e042dae6b"),
 		verifyLogin(),
@@ -80,14 +72,65 @@ func main() {
 		}))
 		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
+}
+
+func handleTweet(ctx context.Context) {
+	// another variable
+	var tweet_results = make(map[string]TweetScrapResult)
+	tweetListener(ctx, tweet_results)
+	tweetActions(ctx)
 	fmt.Println("Exporting...")
-	exportToCSV()
+	exportTweetToCSV(tweet_results)
+}
+
+const (
+	searchTweet = iota + 1
+	singleTweet
+)
+
+func main() {
+	opt, err := promptUser()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", true),
+	)
+	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer acancel()
+	ctx, cancel := chromedp.NewContext(actx)
+	defer cancel()
+	ctx, cancel = context.WithTimeout(ctx, 100*time.Second)
+	defer cancel()
+
+	if opt == singleTweet {
+		handleTweet(ctx)
+	}
+
+}
+
+func promptUser() (int, error) {
+	var userOption int
+	fmt.Println("=====CHOOSE MODE=====")
+	fmt.Println("1. Search Mode")
+	fmt.Println("2. Single Tweet Mode")
+	fmt.Print("Your Option : ")
+	fmt.Scan(&userOption)
+
+	if userOption == searchTweet {
+		return 0, errors.New("Search mode is not yet implemented")
+	} else if userOption == singleTweet {
+		return singleTweet, nil
+	} else {
+		return 0, errors.New("Option provided is unknown")
+	}
 }
 
 func openPage() chromedp.Tasks {
 	fmt.Println("open page")
 	// Search for request that includes : TweetDetail
-	const url string = "https://x.com/GIBOLofficial/status/1868640141335842824"
+	const url string = "https://x.com/jherr/status/1758571101964382487"
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
