@@ -1,13 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
 	"encoding/json"
 	"errors"
 	tiktok_pkg "example/hello/pkg/tiktok"
 	"fmt"
 	"log"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -45,7 +48,7 @@ func promptTiktok() (int, error) {
 	var userOption int
 	if DEBUG_TIKTOK {
 		userOption = singleTiktok
-		tiktokData.tiktok_url = "https://www.tiktok.com/@jokilicers.id/video/7461791113637022984"
+		tiktokData.tiktok_url = "https://www.tiktok.com/@indosiar_sports/video/7368828600205839621"
 	}
 	if !DEBUG_TIKTOK {
 		fmt.Println("=====CHOOSE MODE=====")
@@ -79,6 +82,7 @@ func getFirstCommentPageUrl() string {
 		case *network.EventResponseReceived:
 			response := responseReceivedEvent.Response
 			if strings.Contains(response.URL, "comment") {
+                fmt.Println("Received URL : ", response.URL)
 				firstPageUrl = preprocessURL(response.URL)
 			}
 		}
@@ -87,6 +91,7 @@ func getFirstCommentPageUrl() string {
 		network.Enable(),
 		chromedp.Navigate(tiktokData.tiktok_url),
 		chromedp.WaitReady(`body #app`),
+        chromedp.Sleep(8 * time.Second),
 	)
 	if err != nil {
 		log.Fatalln(err)
@@ -98,25 +103,34 @@ var hasMore int = 1
 var cursor int = 0
 
 func handleSingleTiktok() {
-	firstPageUrl := getFirstCommentPageUrl()
+	firstPageUrlString := getFirstCommentPageUrl()
+    fmt.Println(firstPageUrlString)
 
 	ctx, acancel := createNewContext()
 	defer acancel()
-	tiktokListener(ctx)
+
+	firstPageUrl, err := url.Parse(firstPageUrlString)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	tiktokId := firstPageUrl.Query().Get("aweme_id")
+    tiktokResults := make([]TiktokScrapResult, 0)
+	tiktokListener(ctx, tiktokId, &tiktokResults)
 
 	for hasMore > 0 {
 		err := chromedp.Run(ctx,
 			network.Enable(),
-            // Todo : construct url based on has more and cursor
-			chromedp.Navigate(convert(firstPageUrl, cursor)),
+			chromedp.Navigate(convert(firstPageUrlString, cursor)),
 			chromedp.WaitVisible(`body pre`),
-            chromedp.Sleep(2*time.Second),
+			chromedp.Sleep(2*time.Second),
 		)
 		if err != nil {
 			log.Fatalln(err)
 		}
 	}
 
+    fmt.Println(tiktokResults)
+	exportTiktokToCSV(tiktokResults)
 }
 
 func convert(s string, newCursor int) string {
@@ -124,9 +138,9 @@ func convert(s string, newCursor int) string {
 	if err != nil {
 		log.Fatalln(err)
 	}
-    q := urlResult.Query()
-    q.Set("cursor", strconv.Itoa(newCursor))
-    urlResult.RawQuery = q.Encode()
+	q := urlResult.Query()
+	q.Set("cursor", strconv.Itoa(newCursor))
+	urlResult.RawQuery = q.Encode()
 	return urlResult.String()
 }
 
@@ -147,7 +161,7 @@ func preprocessURL(s string) string {
 	return res
 }
 
-func tiktokListener(ctx context.Context) {
+func tiktokListener(ctx context.Context, tiktokId string, tiktokResults *[]TiktokScrapResult) {
 	// Listen phase
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
 		switch responseReceivedEvent := ev.(type) {
@@ -162,13 +176,52 @@ func tiktokListener(ctx context.Context) {
 				}
 				err = json.Unmarshal(byts, &tiktokJson)
 				if err == nil {
-					fmt.Println("Received : ")
-					fmt.Println(tiktokJson)
-                    hasMore = tiktokJson.HasMore
-                    cursor = tiktokJson.Cursor
+					tiktokResultChunk := processTiktokJSON(tiktokJson, tiktokId)
+					fmt.Println("Received : ", tiktokResultChunk)
+					*tiktokResults = append(*tiktokResults, tiktokResultChunk...)
+					hasMore = tiktokJson.HasMore
+					cursor = tiktokJson.Cursor
 				}
 				return nil
 			}()
 		}
 	})
+}
+
+func processTiktokJSON(tiktokJson tiktok_pkg.Response, tiktokId string) []TiktokScrapResult {
+	var res []TiktokScrapResult
+	for i := 0; i < len(tiktokJson.Comments); i++ {
+		comment := tiktokJson.Comments[i]
+		res = append(res, TiktokScrapResult{TiktokId: tiktokId, Content: comment.Text, Author: comment.User.UniqueId, UserIdStr: comment.User.UniqueId})
+	}
+	return res
+}
+
+type TiktokScrapResult struct {
+	TiktokId  string `json:"tiktok_id"`
+	Author    string `json:"author_id"`
+	Content   string `json:"content"`
+	UserIdStr string `json:"user_id_str"`
+}
+
+func exportTiktokToCSV(tiktok_results []TiktokScrapResult) string {
+	res := make([][]string, len(tiktok_results)+1)
+	res[0] = []string{"Tiktok_ID", "Author", "Comment"}
+
+	var i int = 1
+	for _, val := range tiktok_results {
+		res[i] = []string{val.TiktokId, val.Author, val.Content}
+		i++
+	}
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	w.WriteAll(res)
+	if err := w.Error(); err != nil {
+		log.Fatalln("error writing csv:", err)
+	}
+
+	currentTime := time.Now().Local()
+	fileName := fmt.Sprintf("res-tiktok%d.csv", currentTime.Unix())
+	os.WriteFile(fileName, buf.Bytes(), 0644)
+	return fileName
 }
