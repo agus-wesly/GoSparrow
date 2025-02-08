@@ -20,7 +20,6 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-
 const (
 	searchTiktok = iota + 1
 	singleTiktok
@@ -35,7 +34,7 @@ type TiktokData struct {
 
 var tiktokData TiktokData
 
-var DEBUG_TIKTOK bool = true
+var DEBUG_TIKTOK bool = false
 
 // sesssion id
 func promptTiktok() (int, error) {
@@ -43,7 +42,7 @@ func promptTiktok() (int, error) {
 	var userOption int
 	if DEBUG_TIKTOK {
 		userOption = singleTiktok
-		tiktokData.tiktok_url = "https://www.tiktok.com/@pixie_skywalker/video/7467589825466584325"
+		tiktokData.tiktok_url = "https://www.tiktok.com/@andwey.kurt1/video/7467314067489721608"
 	}
 	if !DEBUG_TIKTOK {
 		fmt.Println("=====CHOOSE MODE=====")
@@ -77,7 +76,7 @@ func getFirstCommentPageUrl() string {
 		case *network.EventResponseReceived:
 			response := responseReceivedEvent.Response
 			if strings.Contains(response.URL, "comment") {
-				fmt.Println("Received URL : ", response.URL)
+				fmt.Println("Retrieved base comment, peeking all comments...")
 				firstPageUrl = preprocessURL(response.URL)
 			}
 		}
@@ -85,8 +84,8 @@ func getFirstCommentPageUrl() string {
 	err := chromedp.Run(ctx,
 		network.Enable(),
 		chromedp.Navigate(tiktokData.tiktok_url),
-        chromedp.WaitReady(`.css-7whb78-DivCommentListContainer`),
-        // Just to make sure ...
+		chromedp.WaitReady(`.css-7whb78-DivCommentListContainer`),
+		// Just to make sure ...
 		chromedp.Sleep(2*time.Second),
 	)
 	if err != nil {
@@ -95,7 +94,7 @@ func getFirstCommentPageUrl() string {
 	return firstPageUrl
 }
 
-var hasMore int = 1
+var hasMore bool = true
 var cursor int = 0
 
 func handleSingleTiktok() {
@@ -117,7 +116,7 @@ func handleSingleTiktok() {
 		network.Enable(),
 	)
 
-	for hasMore > 0 {
+	for hasMore {
 		err := chromedp.Run(ctx,
 			chromedp.Navigate(updateUrl(firstPageUrlString, cursor)),
 			chromedp.WaitVisible(`body pre`),
@@ -128,7 +127,9 @@ func handleSingleTiktok() {
 		}
 	}
 
-	exportTiktokToCSV(tiktokResults)
+	fmt.Println("Starting the export process...")
+	fileName := exportTiktokToCSV(tiktokResults)
+	fmt.Println("Successfully exported to : ", fileName)
 }
 
 func updateUrl(s string, newCursor int) string {
@@ -139,6 +140,7 @@ func updateUrl(s string, newCursor int) string {
 	q := urlResult.Query()
 	q.Set("cursor", strconv.Itoa(newCursor))
 	urlResult.RawQuery = q.Encode()
+	fmt.Println(urlResult.String())
 	return urlResult.String()
 }
 
@@ -166,7 +168,8 @@ func tiktokListener(ctx context.Context, tiktokId string, tiktokResults *[]Tikto
 				if err == nil {
 					tiktokResultChunk := processTiktokJSON(tiktokJson, tiktokId)
 					*tiktokResults = append(*tiktokResults, tiktokResultChunk...)
-					hasMore = tiktokJson.HasMore
+					fmt.Println("Successfully retrieved one chunk of comment...")
+					hasMore = len(tiktokJson.Comments) > 0
 					cursor = tiktokJson.Cursor
 				}
 				return nil
