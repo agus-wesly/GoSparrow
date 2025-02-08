@@ -40,7 +40,7 @@ func prompt() (int, error) {
 
 func createNewContext() (context.Context, context.CancelFunc) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true),
+		chromedp.Flag("headless", false),
 	)
 	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, _ := chromedp.NewContext(actx)

@@ -17,6 +17,12 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+type TweetData struct {
+	auth_token  string
+	tweet_url   string
+	tweet_query string
+}
+
 type Response struct {
 	Data Data `json:"data"`
 }

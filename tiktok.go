@@ -20,11 +20,6 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-type TweetData struct {
-	auth_token  string
-	tweet_url   string
-	tweet_query string
-}
 
 const (
 	searchTiktok = iota + 1
@@ -48,7 +43,7 @@ func promptTiktok() (int, error) {
 	var userOption int
 	if DEBUG_TIKTOK {
 		userOption = singleTiktok
-		tiktokData.tiktok_url = "https://www.tiktok.com/@indosiar_sports/video/7368828600205839621"
+		tiktokData.tiktok_url = "https://www.tiktok.com/@pixie_skywalker/video/7467589825466584325"
 	}
 	if !DEBUG_TIKTOK {
 		fmt.Println("=====CHOOSE MODE=====")
@@ -82,7 +77,7 @@ func getFirstCommentPageUrl() string {
 		case *network.EventResponseReceived:
 			response := responseReceivedEvent.Response
 			if strings.Contains(response.URL, "comment") {
-                fmt.Println("Received URL : ", response.URL)
+				fmt.Println("Received URL : ", response.URL)
 				firstPageUrl = preprocessURL(response.URL)
 			}
 		}
@@ -90,8 +85,9 @@ func getFirstCommentPageUrl() string {
 	err := chromedp.Run(ctx,
 		network.Enable(),
 		chromedp.Navigate(tiktokData.tiktok_url),
-		chromedp.WaitReady(`body #app`),
-        chromedp.Sleep(8 * time.Second),
+        chromedp.WaitReady(`.css-7whb78-DivCommentListContainer`),
+        // Just to make sure ...
+		chromedp.Sleep(2*time.Second),
 	)
 	if err != nil {
 		log.Fatalln(err)
@@ -104,7 +100,6 @@ var cursor int = 0
 
 func handleSingleTiktok() {
 	firstPageUrlString := getFirstCommentPageUrl()
-    fmt.Println(firstPageUrlString)
 
 	ctx, acancel := createNewContext()
 	defer acancel()
@@ -114,13 +109,17 @@ func handleSingleTiktok() {
 		log.Fatalln(err)
 	}
 	tiktokId := firstPageUrl.Query().Get("aweme_id")
-    tiktokResults := make([]TiktokScrapResult, 0)
+	tiktokResults := make([]TiktokScrapResult, 0)
 	tiktokListener(ctx, tiktokId, &tiktokResults)
+
+	chromedp.Run(
+		ctx,
+		network.Enable(),
+	)
 
 	for hasMore > 0 {
 		err := chromedp.Run(ctx,
-			network.Enable(),
-			chromedp.Navigate(convert(firstPageUrlString, cursor)),
+			chromedp.Navigate(updateUrl(firstPageUrlString, cursor)),
 			chromedp.WaitVisible(`body pre`),
 			chromedp.Sleep(2*time.Second),
 		)
@@ -129,11 +128,10 @@ func handleSingleTiktok() {
 		}
 	}
 
-    fmt.Println(tiktokResults)
 	exportTiktokToCSV(tiktokResults)
 }
 
-func convert(s string, newCursor int) string {
+func updateUrl(s string, newCursor int) string {
 	urlResult, err := url.Parse(s)
 	if err != nil {
 		log.Fatalln(err)
@@ -142,16 +140,6 @@ func convert(s string, newCursor int) string {
 	q.Set("cursor", strconv.Itoa(newCursor))
 	urlResult.RawQuery = q.Encode()
 	return urlResult.String()
-}
-
-func openTiktokPage(url string) chromedp.Tasks {
-	fmt.Println("Opening window...")
-	tasks := chromedp.Tasks{
-		network.Enable(),
-		chromedp.Navigate(url),
-		chromedp.WaitReady(`body #app`),
-	}
-	return tasks
 }
 
 func preprocessURL(s string) string {
@@ -177,7 +165,6 @@ func tiktokListener(ctx context.Context, tiktokId string, tiktokResults *[]Tikto
 				err = json.Unmarshal(byts, &tiktokJson)
 				if err == nil {
 					tiktokResultChunk := processTiktokJSON(tiktokJson, tiktokId)
-					fmt.Println("Received : ", tiktokResultChunk)
 					*tiktokResults = append(*tiktokResults, tiktokResultChunk...)
 					hasMore = tiktokJson.HasMore
 					cursor = tiktokJson.Cursor
@@ -192,14 +179,14 @@ func processTiktokJSON(tiktokJson tiktok_pkg.Response, tiktokId string) []Tiktok
 	var res []TiktokScrapResult
 	for i := 0; i < len(tiktokJson.Comments); i++ {
 		comment := tiktokJson.Comments[i]
-		res = append(res, TiktokScrapResult{TiktokId: tiktokId, Content: comment.Text, Author: comment.User.UniqueId, UserIdStr: comment.User.UniqueId})
+		res = append(res, TiktokScrapResult{TiktokId: tiktokId, Content: comment.Text, Author: comment.User.Nickname, UserIdStr: comment.User.UniqueId})
 	}
 	return res
 }
 
 type TiktokScrapResult struct {
 	TiktokId  string `json:"tiktok_id"`
-	Author    string `json:"author_id"`
+	Author    string `json:"username"`
 	Content   string `json:"content"`
 	UserIdStr string `json:"user_id_str"`
 }

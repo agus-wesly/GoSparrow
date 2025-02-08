@@ -14,4 +14,5 @@ type Comment struct {
 type User struct {
     Uid     string  `json:"uid"`
 	UniqueId string `json:"unique_id"`
+    Nickname string `json:"nickname"`
 }
