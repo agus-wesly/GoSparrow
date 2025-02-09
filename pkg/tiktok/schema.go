@@ -1,4 +1,4 @@
-package tiktok_pkg
+package tiktok
 
 type Response struct {
 	Comments []Comment `json:"comments"`
@@ -15,4 +15,16 @@ type User struct {
     Uid     string  `json:"uid"`
 	UniqueId string `json:"unique_id"`
     Nickname string `json:"nickname"`
+}
+
+type TiktokScrapResult struct {
+	TiktokId  string `json:"tiktok_id"`
+	Author    string `json:"username"`
+	Content   string `json:"content"`
+	UserIdStr string `json:"user_id_str"`
+}
+
+type TiktokData struct {
+	TiktokUrl   string
+	TiktokQuery string
 }

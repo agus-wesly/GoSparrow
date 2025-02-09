@@ -3,23 +3,22 @@ package main
 import (
 	"context"
 	"errors"
+	"example/hello/pkg/twitter"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/chromedp/chromedp"
 )
 
 const (
-	twitter = iota + 1
-	tiktok
+	twitterOption = iota + 1
+	tiktokOption
 )
 
-var tweetData TweetData
+var DEBUG bool = false
+var tweetData twitter.Tweet
 
-var DEBUG bool = true
-
-func prompt() (int, error) {
+func basePrompt() (int, error) {
 	var userOption int
 	fmt.Println("=====CHOOSE SOCIAL MEDIA MODE=====")
 	fmt.Println("1. Twitter")
@@ -27,12 +26,8 @@ func prompt() (int, error) {
 	fmt.Print("Your Option : ")
 	fmt.Scan(&userOption)
 
-	if userOption == twitter {
-		return twitter, nil
-	}
-
-	if userOption == tiktok {
-		return tiktok, nil
+	if userOption == twitterOption || userOption == tiktokOption {
+		return userOption, nil
 	}
 
 	return 0, errors.New("Bad option")
@@ -40,7 +35,7 @@ func prompt() (int, error) {
 
 func createNewContext() (context.Context, context.CancelFunc) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", false),
+		chromedp.Flag("headless", true),
 	)
 	actx, acancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, _ := chromedp.NewContext(actx)
@@ -49,12 +44,13 @@ func createNewContext() (context.Context, context.CancelFunc) {
 
 func main() {
 
-	opt, err := prompt()
+	opt, err := basePrompt()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	if opt == twitter {
+	// Twitter
+	if opt == twitterOption {
 		opt_tweet, err_tweet := promptTweet()
 		if err_tweet != nil {
 			log.Fatalln(err)
@@ -65,7 +61,8 @@ func main() {
 			handleSingleTweet(ctx)
 			defer acancel()
 		}
-	} else if opt == tiktok {
+		// Tiktok
+	} else if opt == tiktokOption {
 		opt_tiktok, err_tiktok := promptTiktok()
 		if err_tiktok != nil {
 			log.Fatalln(err_tiktok)
@@ -77,13 +74,4 @@ func main() {
 
 	// ctx, cancel = context.WithTimeout(ctx, 50*time.Second)
 	// defer cancel()
-}
-
-func scrollDown() chromedp.Tasks {
-	return chromedp.Tasks{
-		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
-		chromedp.Evaluate(`document.querySelectorAll("a div[data-testid='tweetPhoto']").forEach((el) => el.remove())`, nil),
-		chromedp.Evaluate(`document.evaluate("//span[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
-		chromedp.Sleep(3 * time.Second),
-	}
 }
