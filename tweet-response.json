@@ -1,1 +1,369 @@
-{"data":{"threaded_conversation_with_injections_v2":{"instructions":[{"type":"TimelineAddEntries","entries":[{"entryId":"tweet-1769976105468104944","sortIndex":"7453395931386670863","content":{"entryType":"TimelineTimelineItem","__typename":"TimelineTimelineItem","itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769976105468104944","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769976105468104944"],"editable_until_msecs":"1710833762000","is_edit_eligible":true,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"254027","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","note_tweet":{"is_expandable":true,"note_tweet_results":{"result":{"id":"Tm90ZVR3ZWV0OjE3Njk5NzYxMDUyOTE5NDgwMzI=","text":"\uD83D\uDD1C\uD83D\uDC40 VAR UNTUK \uD83C\uDDEE\uD83C\uDDE9 LIGA 1 2024/25?!\n\nOperator kompetisi sepakbola Indonesia, PT. LIB memperkenalkan truk VAR untuk memfasilitasi teknologi VAR (Video Assistant Referee) di pertandingan \uD83C\uDDEE\uD83C\uDDE9Liga1.\n\nTruk VAR tersebut  merupakan hasil dari kerjasama antara PT. LIB dengan PT. MTU (Metalindo Teknik Utama), VAR akan digunakan secara penuh di semua pertandingan untuk \uD83C\uDDEE\uD83C\uDDE9Liga1 musim 2024/25.\n\nSedangkan untuk ujicoba penggunaan VAR, sebelumnya PT. LIB telah melakukannya pada laga Final EPA Liga1 U20 2023/24 di Solo beberapa waktu yang lalu (7/3). Untuk penggunaan awal VAR, PT. LIB rencana akan mulai menggunakannya pada Playoffs Championship \uD83C\uDDEE\uD83C\uDDE9Liga1 musim 2023/24 ini.\n\nPeluncuran Truk VAR merupakan solusi yang diusung PT. LIB guna memfasilitasi penggunaan VAR di stadion-stadion di Indonesia yang tidak mendukung penggunaan VAR. Sebagai informasi, Truk VAR (VAR Mobile) ini juga digunakan pada kompetisi kasta tertinggi liga Vietnam, \uD83C\uDDFB\uD83C\uDDF3VLeague1 musim 2023/24 ini.\n\nPT. LIB menyiapkan 12 Truk VAR yang nantinya bakal berpindah dari satu stadion ke stadion lainnya, sementara teknologi VAR tetap diterapkan di 3 stadion di Indonesia, diantaranya Manahan (Solo), Kapten I Wayan Dipta (Gianyar), dan Gelora Bung Tomo (Surabaya).\n\nSecara kesluruhan, PT. LIB menyiapkan 15 teknologi VAR (3 tetap dan 12 mobile) yang dikabarkan memakan biaya sebesar Rp100 Miliar.\n\nAnother good move from @pt_lib \uD83D\uDE4F\uD83D\uDE4F\n\n\uD83D\uDCC4 \uD83D\uDCF8 KatadataOTO","entity_set":{"hashtags":[],"symbols":[],"urls":[],"user_mentions":[{"id_str":"1281193705769021441","name":"PT Liga Indonesia Baru","screen_name":"pt_lib","indices":[1375,1382]}]}}}},"legacy":{"bookmark_count":30,"bookmarked":false,"created_at":"Tue Mar 19 06:36:02 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[0,271],"entities":{"hashtags":[],"media":[{"display_url":"pic.x.com/VPdnEgY8Sp","expanded_url":"https://x.com/Indostransfer/status/1769976105468104944/photo/1","id_str":"1769976100728590336","indices":[272,295],"media_key":"3_1769976100728590336","media_url_https":"https://pbs.twimg.com/media/GJA34sjb0AAYWYc.jpg","type":"photo","url":"https://t.co/VPdnEgY8Sp","ext_media_availability":{"status":"Available"},"features":{"large":{"faces":[]},"medium":{"faces":[]},"small":{"faces":[]},"orig":{"faces":[]}},"sizes":{"large":{"h":374,"w":665,"resize":"fit"},"medium":{"h":374,"w":665,"resize":"fit"},"small":{"h":374,"w":665,"resize":"fit"},"thumb":{"h":150,"w":150,"resize":"crop"}},"original_info":{"height":374,"width":665,"focus_rects":[{"x":0,"y":2,"w":665,"h":372},{"x":291,"y":0,"w":374,"h":374},{"x":337,"y":0,"w":328,"h":374},{"x":478,"y":0,"w":187,"h":374},{"x":0,"y":0,"w":665,"h":374}]},"media_results":{"result":{"media_key":"3_1769976100728590336"}}},{"display_url":"pic.x.com/VPdnEgY8Sp","expanded_url":"https://x.com/Indostransfer/status/1769976105468104944/photo/1","id_str":"1769976102251122688","indices":[272,295],"media_key":"3_1769976102251122688","media_url_https":"https://pbs.twimg.com/media/GJA34yOb0AAtoVH.jpg","type":"photo","url":"https://t.co/VPdnEgY8Sp","ext_media_availability":{"status":"Available"},"features":{"large":{"faces":[]},"medium":{"faces":[]},"small":{"faces":[]},"orig":{"faces":[]}},"sizes":{"large":{"h":512,"w":910,"resize":"fit"},"medium":{"h":512,"w":910,"resize":"fit"},"small":{"h":383,"w":680,"resize":"fit"},"thumb":{"h":150,"w":150,"resize":"crop"}},"original_info":{"height":512,"width":910,"focus_rects":[{"x":0,"y":0,"w":910,"h":510},{"x":221,"y":0,"w":512,"h":512},{"x":253,"y":0,"w":449,"h":512},{"x":349,"y":0,"w":256,"h":512},{"x":0,"y":0,"w":910,"h":512}]},"media_results":{"result":{"media_key":"3_1769976102251122688"}}}],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[]},"extended_entities":{"media":[{"display_url":"pic.x.com/VPdnEgY8Sp","expanded_url":"https://x.com/Indostransfer/status/1769976105468104944/photo/1","id_str":"1769976100728590336","indices":[272,295],"media_key":"3_1769976100728590336","media_url_https":"https://pbs.twimg.com/media/GJA34sjb0AAYWYc.jpg","type":"photo","url":"https://t.co/VPdnEgY8Sp","ext_media_availability":{"status":"Available"},"features":{"large":{"faces":[]},"medium":{"faces":[]},"small":{"faces":[]},"orig":{"faces":[]}},"sizes":{"large":{"h":374,"w":665,"resize":"fit"},"medium":{"h":374,"w":665,"resize":"fit"},"small":{"h":374,"w":665,"resize":"fit"},"thumb":{"h":150,"w":150,"resize":"crop"}},"original_info":{"height":374,"width":665,"focus_rects":[{"x":0,"y":2,"w":665,"h":372},{"x":291,"y":0,"w":374,"h":374},{"x":337,"y":0,"w":328,"h":374},{"x":478,"y":0,"w":187,"h":374},{"x":0,"y":0,"w":665,"h":374}]},"media_results":{"result":{"media_key":"3_1769976100728590336"}}},{"display_url":"pic.x.com/VPdnEgY8Sp","expanded_url":"https://x.com/Indostransfer/status/1769976105468104944/photo/1","id_str":"1769976102251122688","indices":[272,295],"media_key":"3_1769976102251122688","media_url_https":"https://pbs.twimg.com/media/GJA34yOb0AAtoVH.jpg","type":"photo","url":"https://t.co/VPdnEgY8Sp","ext_media_availability":{"status":"Available"},"features":{"large":{"faces":[]},"medium":{"faces":[]},"small":{"faces":[]},"orig":{"faces":[]}},"sizes":{"large":{"h":512,"w":910,"resize":"fit"},"medium":{"h":512,"w":910,"resize":"fit"},"small":{"h":383,"w":680,"resize":"fit"},"thumb":{"h":150,"w":150,"resize":"crop"}},"original_info":{"height":512,"width":910,"focus_rects":[{"x":0,"y":0,"w":910,"h":510},{"x":221,"y":0,"w":512,"h":512},{"x":253,"y":0,"w":449,"h":512},{"x":349,"y":0,"w":256,"h":512},{"x":0,"y":0,"w":910,"h":512}]},"media_results":{"result":{"media_key":"3_1769976102251122688"}}}]},"favorite_count":1776,"favorited":false,"full_text":"\uD83D\uDD1C\uD83D\uDC40 VAR UNTUK \uD83C\uDDEE\uD83C\uDDE9 LIGA 1 2024/25?!\n\nOperator kompetisi sepakbola Indonesia, PT. LIB memperkenalkan truk VAR untuk memfasilitasi teknologi VAR (Video Assistant Referee) di pertandingan \uD83C\uDDEE\uD83C\uDDE9Liga1.\n\nTruk VAR tersebut  merupakan hasil dari kerjasama antara PT. LIB dengan PT. MTU https://t.co/VPdnEgY8Sp","is_quote_status":false,"lang":"in","possibly_sensitive":false,"possibly_sensitive_editable":true,"quote_count":39,"reply_count":134,"retweet_count":190,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1769976105468104944"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet","hasModeratedReplies":false}}},{"entryId":"conversationthread-1770076014338884074","sortIndex":"7453395931386670853","content":{"entryType":"TimelineTimelineModule","__typename":"TimelineTimelineModule","items":[{"entryId":"conversationthread-1770076014338884074-tweet-1770076014338884074","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1770076014338884074","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjozNTM1ODk0NTg=","rest_id":"353589458","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":false,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":false,"can_media_tag":true,"created_at":"Fri Aug 12 09:40:07 +0000 2011","default_profile":false,"default_profile_image":false,"description":"vakuum traveller - like Dashboard Confessional, Real Madrid, Celtic FC, and Yogyakarta.","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"marketglory.com/strategygame/c…","expanded_url":"http://www.marketglory.com/strategygame/cangcut","url":"https://t.co/rM7iApUT0v","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":703,"followers_count":92,"friends_count":21,"has_custom_timelines":false,"is_translator":false,"listed_count":0,"location":"cabe ijo","media_count":188,"name":"Haasan B Orlinski","normal_followers_count":92,"pinned_tweet_ids_str":[],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/353589458/1383893180","profile_image_url_https":"https://pbs.twimg.com/profile_images/1044837090788343810/AixXEk3e_normal.jpg","profile_interstitial_type":"","screen_name":"haasan182","statuses_count":8393,"translator_type":"none","url":"https://t.co/rM7iApUT0v","verified":false,"want_retweets":false,"withheld_in_countries":[]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1770076014338884074"],"editable_until_msecs":"1710857582000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"2405","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 13:13:02 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[15,56],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"811427632336146433","name":".","screen_name":"Indostransfer","indices":[0,14]}]},"favorite_count":0,"favorited":false,"full_text":"@Indostransfer kok SJH ga ada ya, kan bekas venue WC U17","in_reply_to_screen_name":"Indostransfer","in_reply_to_status_id_str":"1769976105468104944","in_reply_to_user_id_str":"811427632336146433","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":1,"retweet_count":0,"retweeted":false,"user_id_str":"353589458","id_str":"1770076014338884074"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACCGAHgAUKAAIAAAAACCAgCAAAAAA="}}}}},{"entryId":"conversationthread-1770076014338884074-tweet-1770076591651271009","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1770076591651271009","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1770076591651271009"],"editable_until_msecs":"1710857720000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"2030","state":"EnabledWithCount"},"source":"<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 13:15:20 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[11,261],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"353589458","name":"Haasan B Orlinski","screen_name":"haasan182","indices":[0,10]}]},"favorite_count":1,"favorited":false,"full_text":"@haasan182 asumsiku Persib berkandang di SJH ini untuk sementara aja, artinya kalo nanti GBLA udah rampung renovasinya ya Persib balik kesana lagi.\n\nNah setelah di renov itu krn udh ada perbaikan dalam segi standar setelahnya bisa dipasang VAR tetap juga disana","in_reply_to_screen_name":"haasan182","in_reply_to_status_id_str":"1770076014338884074","in_reply_to_user_id_str":"353589458","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":0,"retweet_count":0,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1770076591651271009"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACEKIDgYEKAAIAAAAAGCBACAAAAAA="}}}}}],"displayType":"VerticalConversation","clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"}}}}},{"entryId":"conversationthread-1769978800442589214","sortIndex":"7453395931386670843","content":{"entryType":"TimelineTimelineModule","__typename":"TimelineTimelineModule","items":[{"entryId":"conversationthread-1769978800442589214-tweet-1769978800442589214","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769978800442589214","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjoxMjk4NDgzMDAzOTYyNzEyMDY0","rest_id":"1298483003962712064","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":false,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":false,"can_media_tag":false,"created_at":"Wed Aug 26 04:51:11 +0000 2020","default_profile":true,"default_profile_image":false,"description":"sinner, jauh dari sampoerna","entities":{"description":{"urls":[]}},"fast_followers_count":0,"favourites_count":13376,"followers_count":336,"friends_count":473,"has_custom_timelines":true,"is_translator":false,"listed_count":0,"location":"","media_count":188,"name":"deldeldeldel","normal_followers_count":336,"pinned_tweet_ids_str":["1650195996989874177"],"possibly_sensitive":false,"profile_image_url_https":"https://pbs.twimg.com/profile_images/1542940382354239488/whP0HKcd_normal.jpg","profile_interstitial_type":"","screen_name":"gongxifdl","statuses_count":9248,"translator_type":"none","verified":false,"want_retweets":false,"withheld_in_countries":[]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769978800442589214"],"editable_until_msecs":"1710834405000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":false,"views":{"count":"17001","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 06:46:45 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[15,63],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"811427632336146433","name":".","screen_name":"Indostransfer","indices":[0,14]}]},"favorite_count":2,"favorited":false,"full_text":"@Indostransfer Wasit var nya berarti standbye dalem truk ndos?\uD83D\uDE06","in_reply_to_screen_name":"Indostransfer","in_reply_to_status_id_str":"1769976105468104944","in_reply_to_user_id_str":"811427632336146433","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":3,"retweet_count":0,"retweeted":false,"user_id_str":"1298483003962712064","id_str":"1769978800442589214"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACCSQDgAUKAAIAAAAACCAgCAAAAAA="}}}}},{"entryId":"conversationthread-1769978800442589214-tweet-1769980621219377362","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769980621219377362","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769980621219377362"],"editable_until_msecs":"1710834839000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":false,"views":{"count":"15034","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 06:53:59 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[11,25],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"1298483003962712064","name":"deldeldeldel","screen_name":"gongxifdl","indices":[0,10]}]},"favorite_count":3,"favorited":false,"full_text":"@gongxifdl Iyadong wkqkqk","in_reply_to_screen_name":"gongxifdl","in_reply_to_status_id_str":"1769978800442589214","in_reply_to_user_id_str":"1298483003962712064","is_quote_status":false,"lang":"tl","quote_count":0,"reply_count":1,"retweet_count":0,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1769980621219377362"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACEigDgYEKAAIAAAAAGCBACAAAAAA="}}}}}],"displayType":"VerticalConversation","clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"}}}}},{"entryId":"conversationthread-1769977015271346328","sortIndex":"7453395931386670833","content":{"entryType":"TimelineTimelineModule","__typename":"TimelineTimelineModule","items":[{"entryId":"conversationthread-1769977015271346328-tweet-1769977015271346328","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769977015271346328","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjoyMzY3ODU5MzU2","rest_id":"2367859356","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":false,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":false,"created_at":"Sun Mar 02 00:29:45 +0000 2014","default_profile":false,"default_profile_image":false,"description":"Part of @SquadraD_Sch in @LigaBRFI, Banyuwangi Jenggirat Tangi in @podopedia","entities":{"description":{"urls":[]}},"fast_followers_count":0,"favourites_count":22305,"followers_count":111,"friends_count":124,"has_custom_timelines":true,"is_translator":false,"listed_count":0,"location":"Surakarta","media_count":1615,"name":"aldo","normal_followers_count":111,"pinned_tweet_ids_str":["1825771445169041452"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/2367859356/1708124329","profile_image_url_https":"https://pbs.twimg.com/profile_images/1717508592415481856/MI_jzgPU_normal.jpg","profile_interstitial_type":"","screen_name":"wonocinno","statuses_count":25214,"translator_type":"none","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1477878914676506625","professional_type":"Creator","category":[]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769977015271346328"],"editable_until_msecs":"1710833979000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":false,"views":{"count":"25297","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":1,"bookmarked":false,"created_at":"Tue Mar 19 06:39:39 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[15,98],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"811427632336146433","name":".","screen_name":"Indostransfer","indices":[0,14]}]},"favorite_count":42,"favorited":false,"full_text":"@Indostransfer berarti yang lolos ke championship nemenin borneo &amp; persib adalah Bali dan Solo","in_reply_to_screen_name":"Indostransfer","in_reply_to_status_id_str":"1769976105468104944","in_reply_to_user_id_str":"811427632336146433","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":14,"retweet_count":0,"retweeted":false,"user_id_str":"2367859356","id_str":"1769977015271346328"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACDDADgAUKAAIAAAAACCBACAAAAAA="}}}}},{"entryId":"conversationthread-1769977015271346328-tweet-1769977487600280008","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769977487600280008","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769977487600280008"],"editable_until_msecs":"1710834092000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"23244","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 06:41:32 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[11,32],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"2367859356","name":"aldo","screen_name":"wonocinno","indices":[0,10]}]},"favorite_count":28,"favorited":false,"full_text":"@wonocinno Cocokologi teruuussss","in_reply_to_screen_name":"wonocinno","in_reply_to_status_id_str":"1769977015271346328","in_reply_to_user_id_str":"2367859356","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":2,"retweet_count":0,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1769977487600280008"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACECADgYEKAAIAAAAAGCBACAAAAAA="}}}}}],"displayType":"VerticalConversation","clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"}}}}},{"entryId":"conversationthread-1769987641871835596","sortIndex":"7453395931386670823","content":{"entryType":"TimelineTimelineModule","__typename":"TimelineTimelineModule","items":[{"entryId":"conversationthread-1769987641871835596-tweet-1769987641871835596","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769987641871835596","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjoyMjMzODE1OTY=","rest_id":"223381596","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":false,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Mon Dec 06 06:46:28 +0000 2010","default_profile":true,"default_profile_image":false,"description":"Jakarta ngetan ➡️ 580 km , \uD83D\uDE89 74rb","entities":{"description":{"urls":[]}},"fast_followers_count":0,"favourites_count":3800,"followers_count":233,"friends_count":1130,"has_custom_timelines":true,"is_translator":false,"listed_count":0,"location":"Jakarta","media_count":786,"name":"dp","normal_followers_count":233,"pinned_tweet_ids_str":["1526217943348293632"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/223381596/1650554343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1858293630756417536/5LhdJMWn_normal.jpg","profile_interstitial_type":"","screen_name":"Dhepe08","statuses_count":10625,"translator_type":"none","verified":false,"want_retweets":false,"withheld_in_countries":[]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769987641871835596"],"editable_until_msecs":"1710836513000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"9280","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 07:21:53 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[15,49],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"811427632336146433","name":".","screen_name":"Indostransfer","indices":[0,14]}]},"favorite_count":2,"favorited":false,"full_text":"@Indostransfer Boleh sebats kaga itu didalam truk","in_reply_to_screen_name":"Indostransfer","in_reply_to_status_id_str":"1769976105468104944","in_reply_to_user_id_str":"811427632336146433","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":1,"retweet_count":0,"retweeted":false,"user_id_str":"223381596","id_str":"1769987641871835596"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACCCADgAUKAAIAAAAACCBACAAAAAA="}}}}},{"entryId":"conversationthread-1769987641871835596-tweet-1769987971611246705","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769987971611246705","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769987971611246705"],"editable_until_msecs":"1710836591000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"8248","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 07:23:11 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[9,31],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"223381596","name":"dp","screen_name":"Dhepe08","indices":[0,8]}]},"favorite_count":13,"favorited":false,"full_text":"@Dhepe08 Nggak. Ruangan ber AC.","in_reply_to_screen_name":"Dhepe08","in_reply_to_status_id_str":"1769987641871835596","in_reply_to_user_id_str":"223381596","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":0,"retweet_count":0,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1769987971611246705"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACECADgYEKAAIAAAAAGCBACAAAAAA="}}}}}],"displayType":"VerticalConversation","clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"}}}}},{"entryId":"conversationthread-1769977216321163555","sortIndex":"7453395931386670813","content":{"entryType":"TimelineTimelineModule","__typename":"TimelineTimelineModule","items":[{"entryId":"conversationthread-1769977216321163555-tweet-1769977216321163555","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769977216321163555","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo3NTg2MTY5MTQ4MDU0NjUwODg=","rest_id":"758616914805465088","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":false,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":false,"can_media_tag":true,"created_at":"Thu Jul 28 10:55:41 +0000 2016","default_profile":true,"default_profile_image":false,"description":"Sports enthusiasts, especially football and badminton.","entities":{"description":{"urls":[]}},"fast_followers_count":0,"favourites_count":29219,"followers_count":86,"friends_count":165,"has_custom_timelines":true,"is_translator":false,"listed_count":0,"location":"","media_count":217,"name":"Jan.","normal_followers_count":86,"pinned_tweet_ids_str":[],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/758616914805465088/1727690772","profile_image_url_https":"https://pbs.twimg.com/profile_images/1781067442963537920/5w-Lc9hn_normal.jpg","profile_interstitial_type":"","screen_name":"LFC_Jan","statuses_count":3234,"translator_type":"none","verified":false,"want_retweets":false,"withheld_in_countries":[]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769977216321163555"],"editable_until_msecs":"1710834027000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"14795","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 06:40:27 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[15,98],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"811427632336146433","name":".","screen_name":"Indostransfer","indices":[0,14]}]},"favorite_count":2,"favorited":false,"full_text":"@Indostransfer Yg VAR tetap itu ke depannya ada kemungkinan nambah di stadion lain nggak sih Ndos?","in_reply_to_screen_name":"Indostransfer","in_reply_to_status_id_str":"1769976105468104944","in_reply_to_user_id_str":"811427632336146433","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":2,"retweet_count":0,"retweeted":false,"user_id_str":"758616914805465088","id_str":"1769977216321163555"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACCCADgAUKAAIAAAAACCBACAAAAAA="}}}}},{"entryId":"conversationthread-1769977216321163555-tweet-1769977517610512534","item":{"itemContent":{"itemType":"TimelineTweet","__typename":"TimelineTweet","tweet_results":{"result":{"__typename":"Tweet","rest_id":"1769977517610512534","has_birdwatch_notes":false,"core":{"user_results":{"result":{"__typename":"User","id":"VXNlcjo4MTE0Mjc2MzIzMzYxNDY0MzM=","rest_id":"811427632336146433","affiliates_highlighted_label":{},"has_graduated_access":true,"parody_commentary_fan_label":"None","is_blue_verified":true,"profile_image_shape":"Circle","legacy":{"following":false,"can_dm":true,"can_media_tag":true,"created_at":"Wed Dec 21 04:26:37 +0000 2016","default_profile":false,"default_profile_image":false,"description":"\uD83C\uDDEE\uD83C\uDDE9Info transfer, stats, and many more. \nBeli Juaran herbal? Klik disini \uD83D\uDC47","entities":{"description":{"urls":[]},"url":{"urls":[{"display_url":"s.shopee.co.id/3LBR8BqlnV","expanded_url":"https://s.shopee.co.id/3LBR8BqlnV","url":"https://t.co/n2KG6BmxEE","indices":[0,23]}]}},"fast_followers_count":0,"favourites_count":17766,"followers_count":309437,"friends_count":609,"has_custom_timelines":true,"is_translator":false,"listed_count":435,"location":"Indonesia","media_count":24279,"name":".","normal_followers_count":309437,"pinned_tweet_ids_str":["1878087235914096757"],"possibly_sensitive":false,"profile_banner_url":"https://pbs.twimg.com/profile_banners/811427632336146433/1545373343","profile_image_url_https":"https://pbs.twimg.com/profile_images/1600090604771299329/7hdhK0i-_normal.jpg","profile_interstitial_type":"","screen_name":"Indostransfer","statuses_count":107794,"translator_type":"none","url":"https://t.co/n2KG6BmxEE","verified":false,"want_retweets":false,"withheld_in_countries":[]},"professional":{"rest_id":"1478316910450122753","professional_type":"Creator","category":[{"id":800,"name":"Sports, Fitness & Recreation","icon_name":"IconBriefcaseStroke"}]},"tipjar_settings":{}}}},"unmention_data":{},"edit_control":{"edit_tweet_ids":["1769977517610512534"],"editable_until_msecs":"1710834099000","is_edit_eligible":false,"edits_remaining":"5"},"is_translatable":true,"views":{"count":"13361","state":"EnabledWithCount"},"source":"<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>","legacy":{"bookmark_count":0,"bookmarked":false,"created_at":"Tue Mar 19 06:41:39 +0000 2024","conversation_id_str":"1769976105468104944","display_text_range":[9,73],"entities":{"hashtags":[],"symbols":[],"timestamps":[],"urls":[],"user_mentions":[{"id_str":"758616914805465088","name":"Jan.","screen_name":"LFC_Jan","indices":[0,8]}]},"favorite_count":17,"favorited":false,"full_text":"@LFC_Jan Nungkin nambah ya seiring ada stadion yg renov juga kan dri PUPR","in_reply_to_screen_name":"LFC_Jan","in_reply_to_status_id_str":"1769977216321163555","in_reply_to_user_id_str":"758616914805465088","is_quote_status":false,"lang":"in","quote_count":0,"reply_count":2,"retweet_count":0,"retweeted":false,"user_id_str":"811427632336146433","id_str":"1769977517610512534"},"quick_promote_eligibility":{"eligibility":"IneligibleNotProfessional"}}},"tweetDisplayType":"Tweet"},"clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"},"timelinesDetails":{"controllerData":"DAACDAAEDAABCgABFSACECADgYEKAAIAAAAAGCBACAAAAAA="}}}}}],"displayType":"VerticalConversation","clientEventInfo":{"details":{"conversationDetails":{"conversationSection":"HighQuality"}}}}},{"entryId":"cursor-bottom-584282064236224442","sortIndex":"7453395931386670812","content":{"entryType":"TimelineTimelineItem","__typename":"TimelineTimelineItem","itemContent":{"itemType":"TimelineTimelineCursor","__typename":"TimelineTimelineCursor","value":"NwAAAPAoHBlWxsTc9dC5nJAxmIfRqb2YoZAx1IfewbewyZAxvIDSxeuVnZAxsMLW_fatnJAxJQISFQQAAA","cursorType":"Bottom"}}}]},{"type":"TimelineTerminateTimeline","direction":"Top"}]}}}
+{
+"data": {
+"search_by_raw_query": {
+"search_timeline": {
+    "timeline": {
+        "instructions": [
+            {
+                "type": "TimelineAddEntries",
+                "entries": [
+                    {
+                        "entryId": "toptabsrpusermodule-1890267287567466496",
+                        "sortIndex": "1890267287567466496",
+                        "content": {
+
+                            "entryType": "TimelineTimelineModule",
+                            "__typename": "TimelineTimelineModule",
+                            "items": [
+                                {
+                                    "entryId": "toptabsrpusermodule-1890267287567466496-user-1463157892324855809",
+                                    "item": {
+                                        "itemContent": {
+                                            "itemType": "TimelineUser",
+                                            "__typename": "TimelineUser",
+                                            "user_results": {
+                                                "result": {
+                                                    "__typename": "User",
+                                                    "id": "VXNlcjoxNDYzMTU3ODkyMzI0ODU1ODA5",
+                                                    "rest_id": "1463157892324855809",
+                                                    "affiliates_highlighted_label": {},
+                                                    "has_graduated_access": true,
+                                                    "parody_commentary_fan_label": "None",
+                                                    "is_blue_verified": false,
+                                                    "profile_image_shape": "Circle",
+                                                    "legacy": {
+                                                        "following": false,
+                                                        "can_dm": false,
+                                                        "can_media_tag": true,
+                                                        "created_at": "Tue Nov 23 14:50:29 +0000 2021",
+                                                        "default_profile": true,
+                                                        "default_profile_image": false,
+                                                        "description": "VARiable",
+                                                        "entities": {
+                                                            "description": {
+                                                                "urls": []
+                                                            }
+                                                        },
+                                                        "fast_followers_count": 0,
+                                                        "favourites_count": 0,
+                                                        "followers_count": 0,
+                                                        "friends_count": 3,
+                                                        "has_custom_timelines": false,
+                                                        "is_translator": false,
+                                                        "listed_count": 0,
+                                                        "location": "",
+                                                        "media_count": 0,
+                                                        "name": "vrmedis indonesia",
+                                                        "normal_followers_count": 0,
+                                                        "pinned_tweet_ids_str": [],
+                                                        "possibly_sensitive": false,
+                                                        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1463158014458748928/YymndjBw_normal.png",
+                                                        "profile_interstitial_type": "",
+                                                        "screen_name": "var14bl3",
+                                                        "statuses_count": 0,
+                                                        "translator_type": "none",
+                                                        "verified": false,
+                                                        "want_retweets": false,
+                                                        "withheld_in_countries": []
+                                                    },
+                                                    "tipjar_settings": {}
+                                                }
+                                            },
+                                            "userDisplayType": "UserDetailed"
+                                        },
+                                        "clientEventInfo": {
+                                            "component": "user_module",
+                                            "element": "user",
+                                            "details": {
+                                                "timelinesDetails": {
+                                                    "controllerData": "DAACDAAFDAABDAACCgABAAAAAAAAAAEKAAKr+h8d2Z/fMgoABT2ll/xcPpKsCAAGAAAAAQoAB/W8/zJsyLDNAAAAAAA="
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ],
+                            "displayType": "Vertical",
+                            "header": {
+                                "displayType": "Classic",
+                                "text": "People",
+                                "sticky": true
+                            },
+                            "footer": {
+                                "displayType": "Classic",
+                                "text": "View all",
+                                "landingUrl": {
+                                    "url": "twitter://search?query=var+indonesia+min_replies%3A100+min_faves%3A0+lang%3Aen&src=typed_query&type=users",
+                                    "urlType": "DeepLink"
+                                }
+                            },
+                            "clientEventInfo": {
+                                "component": "user_module",
+                                "element": "module"
+                            }
+                        }
+                    },
+                    {
+                        "entryId": "tweet-1746924450342469723",
+                        "sortIndex": "1890267287567466486",
+                        "content": {
+                            "entryType": "TimelineTimelineItem",
+                            "__typename": "TimelineTimelineItem",
+                            "itemContent": {
+                                "itemType": "TimelineTweet",
+                                "__typename": "TimelineTweet",
+                                "tweet_results": {
+                                    "result": {
+                                        "__typename": "Tweet",
+                                        "rest_id": "1746924450342469723",
+                                        "core": {
+                                            "user_results": {
+                                                "result": {
+                                                    "__typename": "User",
+                                                    "id": "VXNlcjoxMjIyOTI3NTIyMDMzMDk0NjU2",
+                                                    "rest_id": "1222927522033094656",
+                                                    "affiliates_highlighted_label": {},
+                                                    "has_graduated_access": true,
+                                                    "parody_commentary_fan_label": "None",
+                                                    "is_blue_verified": true,
+                                                    "profile_image_shape": "Circle",
+                                                    "legacy": {
+                                                        "following": false,
+                                                        "can_dm": true,
+                                                        "can_media_tag": false,
+                                                        "created_at": "Thu Jan 30 17:01:29 +0000 2020",
+                                                        "default_profile": true,
+                                                        "default_profile_image": false,
+                                                        "description": "• Akun Penyabar Akun Bijaksana 🤙 \n• For Business DM or email (idextratime2015@gmail.com) 💌\n· Jadwal Pertandingan Cek Sorotan 🔥",
+                                                        "entities": {
+                                                            "description": {
+                                                                "urls": []
+                                                            },
+                                                            "url": {
+                                                                "urls": [
+                                                                    {
+                                                                        "display_url": "linktr.ee/idextratime",
+                                                                        "expanded_url": "https://linktr.ee/idextratime",
+                                                                        "url": "https://t.co/7Ga5l59wOT",
+                                                                        "indices": [
+                                                                            0,
+                                                                            23
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        },
+                                                        "fast_followers_count": 0,
+                                                        "favourites_count": 102155,
+                                                        "followers_count": 1382182,
+                                                        "friends_count": 2567,
+                                                        "has_custom_timelines": true,
+                                                        "is_translator": false,
+                                                        "listed_count": 1259,
+                                                        "location": "",
+                                                        "media_count": 80482,
+                                                        "name": "Extra Time Indonesia",
+                                                        "normal_followers_count": 1382182,
+                                                        "pinned_tweet_ids_str": [],
+                                                        "possibly_sensitive": false,
+                                                        "profile_banner_url": "https://pbs.twimg.com/profile_banners/1222927522033094656/1737007909",
+                                                        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1600092339736743936/2XwcJit9_normal.jpg",
+                                                        "profile_interstitial_type": "",
+                                                        "screen_name": "idextratime",
+                                                        "statuses_count": 189802,
+                                                        "translator_type": "none",
+                                                        "url": "https://t.co/7Ga5l59wOT",
+                                                        "verified": false,
+                                                        "want_retweets": false,
+                                                        "withheld_in_countries": []
+                                                    },
+                                                    "professional": {
+                                                        "rest_id": "1468849081053114369",
+                                                        "professional_type": "Business",
+                                                        "category": [
+                                                            {
+                                                                "id": 800,
+                                                                "name": "Sports, Fitness & Recreation",
+                                                                "icon_name": "IconBriefcaseStroke"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "tipjar_settings": {
+                                                        "is_enabled": true,
+                                                        "bitcoin_handle": "1Q5xeuDNScMTtv41aCFHd96YC1yFPiXCT2"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "unmention_data": {},
+                                        "edit_control": {
+                                            "edit_tweet_ids": [
+                                                "1746924450342469723"
+                                            ],
+                                            "editable_until_msecs": "1705337819000",
+                                            "is_edit_eligible": true,
+                                            "edits_remaining": "5"
+                                        },
+                                        "is_translatable": false,
+                                        "views": {
+                                            "count": "310738",
+                                            "state": "EnabledWithCount"
+                                        },
+                                        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+                                        "grok_analysis_button": true,
+                                        "legacy": {
+                                            "bookmark_count": 50,
+                                            "bookmarked": false,
+                                            "created_at": "Mon Jan 15 15:56:59 +0000 2024",
+                                            "conversation_id_str": "1746924450342469723",
+                                            "display_text_range": [
+                                                0,
+                                                228
+                                            ],
+                                            "entities": {
+                                                "hashtags": [
+                                                    {
+                                                        "indices": [
+                                                            207,
+                                                            214
+                                                        ],
+                                                        "text": "Blibli"
+                                                    }
+                                                ],
+                                                "symbols": [],
+                                                "timestamps": [],
+                                                "urls": [],
+                                                "user_mentions": [
+                                                    {
+                                                        "id_str": "280834900",
+                                                        "name": "Blibli",
+                                                        "screen_name": "bliblidotcom",
+                                                        "indices": [
+                                                            215,
+                                                            228
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "favorite_count": 4344,
+                                            "favorited": false,
+                                            "full_text": "Wallahi this referee does not know azab because he just okay okay with the haram offside goal, no var no check check like the last one I swear ya Allah, astaghfirullah this is dzolim. Not ikhlas, ya Allah.\n\n#Blibli @bliblidotcom",
+                                            "is_quote_status": false,
+                                            "lang": "en",
+                                            "quote_count": 243,
+                                            "reply_count": 346,
+                                            "retweet_count": 844,
+                                            "retweeted": false,
+                                            "user_id_str": "1222927522033094656",
+                                            "id_str": "1746924450342469723"
+                                        }
+                                    }
+                                },
+                                "tweetDisplayType": "Tweet",
+                                "highlights": {
+                                    "textHighlights": [
+                                        {
+                                            "startIndex": 98,
+                                            "endIndex": 101
+                                        }
+                                    ]
+                                }
+                            },
+                            "feedbackInfo": {
+                                "feedbackKeys": [
+                                    "1060665035"
+                                ]
+                            },
+                            "clientEventInfo": {
+                                "component": "result",
+                                "element": "tweet",
+                                "details": {
+                                    "timelinesDetails": {
+                                        "controllerData": "DAACDAAFDAABDAABDAABCgABAAAAAAACAAAAAAwAAgoAAQAAAAAAAAABCgACq/ofHdmf3zIKAAU9pZf8XD6SrAgABgAAAAEKAAf1vP8ybMiwzQAAAAAA"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "entryId": "cursor-top-9223372036854775807",
+                        "sortIndex": "9223372036854775807",
+                        "content": {
+                            "entryType": "TimelineTimelineCursor",
+                            "__typename": "TimelineTimelineCursor",
+                            "value": "DAACCgACGjuUFT4AJxAKAAMaO5QVPf_Y8AgABAAAAAELAAUAAAAoRW1QQzZ3QUFBZlEvZ0dKTjB2R3AvQUFBQUFFWVBsS0lNQnVBV3c9PQgABgAAAAAIAAcAAAAADAAICgABGD5SiDAbgFsAAAA",
+                            "cursorType": "Top"
+                        }
+                    },
+                    {
+                        "entryId": "cursor-bottom-0",
+                        "sortIndex": "0",
+                        "content": {
+                            "entryType": "TimelineTimelineCursor",
+                            "__typename": "TimelineTimelineCursor",
+                            "value": "DAACCgACGjuUFT4AJxAKAAMaO5QVPf_Y8AgABAAAAAILAAUAAAAoRW1QQzZ3QUFBZlEvZ0dKTjB2R3AvQUFBQUFFWVBsS0lNQnVBV3c9PQgABgAAAAAIAAcAAAAADAAICgABGD5SiDAbgFsAAAA",
+                            "cursorType": "Bottom"
+                        }
+                    }
+                ]
+            }
+        ],
+        "responseObjects": {
+            "feedbackActions": [
+                {
+                    "key": "1060665035",
+                    "value": {
+                        "feedbackType": "GiveFeedback",
+                        "prompt": "This post's not helpful",
+                        "confirmation": "Thanks for offering your feedback. X is conducting research to improve search. Choose the option that best reflects your opinion.",
+                        "childKeys": [
+                            "628739688",
+                            "-2085265619"
+                        ],
+                        "hasUndoAction": true,
+                        "confirmationDisplayType": "Inline",
+                        "icon": "Frown",
+                        "clientEventInfo": {
+                            "action": "click",
+                            "component": "result",
+                            "element": "feedback_givefeedback"
+                        }
+                    }
+                },
+                {
+                    "key": "628739688",
+                    "value": {
+                        "feedbackType": "NotRelevant",
+                        "prompt": "This post isn't relevant",
+                        "confirmation": "Thanks for your help.\nThis feedback will be used in research to improve search.",
+                        "hasUndoAction": true,
+                        "confirmationDisplayType": "Inline",
+                        "clientEventInfo": {
+                            "action": "click",
+                            "component": "result",
+                            "element": "feedback_notrelevant"
+                        }
+                    }
+                },
+                {
+                    "key": "-2085265619",
+                    "value": {
+                        "feedbackType": "NotCredible",
+                        "prompt": "This post isn't credible",
+                        "confirmation": "Thanks for your help.\nThis feedback will be used in research to improve search.",
+                        "hasUndoAction": true,
+                        "confirmationDisplayType": "Inline",
+                        "clientEventInfo": {
+                            "action": "click",
+                            "component": "result",
+                            "element": "feedback_notcredible"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+}
+}
+}

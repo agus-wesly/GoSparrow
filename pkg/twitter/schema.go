@@ -1,9 +1,18 @@
 package twitter
 
 type Tweet struct {
-	AuthToken  string
-	TweetUrl   string
-	TweetQuery string
+	AuthToken string
+}
+
+type SingleOption struct {
+	TweetUrl string
+}
+
+type SearchOption struct {
+	Query      string
+	MinReplies int
+	MinLikes   int
+	Language   string
 }
 
 type Response struct {
@@ -18,10 +27,6 @@ type ThreadedConversation struct {
 	Instructions []Instruction `json:"instructions"`
 }
 
-type Instruction struct {
-	Type    string  `json:"type"`
-	Entries []Entry `json:"entries"`
-}
 
 type Entry struct {
 	EntryId   string  `json:"entryId"`
@@ -71,6 +76,7 @@ type UserResults struct {
 }
 
 type UserResult struct {
+    RestId  string `json:"rest_id"`
 	Legacy UserResultLegacy `json:"legacy"`
 }
 
@@ -90,4 +96,29 @@ type TweetScrapResult struct {
 	Author    string `json:"author_id"`
 	Content   string `json:"content"`
 	UserIdStr string `json:"user_id_str"`
+}
+
+type SearchResponse struct {
+	Data Data `json:"data"`
+}
+
+type Data struct {
+	SearchByRawQuery SearchByRawQuery `json:"search_by_raw_query"`
+}
+
+type SearchByRawQuery struct {
+	SearchTimeline SearchTimeline `json:"search_timeline"`
+}
+
+type SearchTimeline struct {
+	Timeline Timeline `json:"timeline"`
+}
+
+type Timeline struct {
+	Instructions []Instruction `json:"instructions"`
+}
+
+// tweets = responseJson.data?.search_by_raw_query.search_timeline.timeline?.instructions?.[0]?.entries;
+type Instruction struct {
+	Entries []Entry `json:"entries"`
 }

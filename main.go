@@ -6,6 +6,7 @@ import (
 	"example/hello/pkg/twitter"
 	"fmt"
 	"log"
+	"net/url"
 
 	"github.com/chromedp/chromedp"
 )
@@ -15,7 +16,7 @@ const (
 	tiktokOption
 )
 
-var DEBUG bool = false
+var DEBUG bool = true
 var tweetData twitter.Tweet
 
 func basePrompt() (int, error) {
@@ -51,16 +52,7 @@ func main() {
 
 	// Twitter
 	if opt == twitterOption {
-		opt_tweet, err_tweet := promptTweet()
-		if err_tweet != nil {
-			log.Fatalln(err)
-		}
-
-		if opt_tweet == singleTweet {
-			ctx, acancel := createNewContext()
-			handleSingleTweet(ctx)
-			defer acancel()
-		}
+		promptTweet()
 		// Tiktok
 	} else if opt == tiktokOption {
 		opt_tiktok, err_tiktok := promptTiktok()
@@ -74,4 +66,17 @@ func main() {
 
 	// ctx, cancel = context.WithTimeout(ctx, 50*time.Second)
 	// defer cancel()
+}
+
+func constructSearchUrl(opt *twitter.SearchOption) string {
+	parsed, err := url.Parse("https://x.com/search")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	query := parsed.Query()
+	res := fmt.Sprintf("%s min_replies:%d min_faves:%d lang:%s", opt.Query, opt.MinReplies, opt.MinLikes, opt.Language)
+	query.Set("q", res)
+	query.Set("src", "typed_query")
+	parsed.RawQuery = query.Encode()
+	return parsed.String()
 }
