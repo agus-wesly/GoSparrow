@@ -16,7 +16,7 @@ const (
 	tiktokOption
 )
 
-var DEBUG bool = true
+var DEBUG bool = false
 var tweetData twitter.Tweet
 
 func basePrompt() (int, error) {
@@ -44,7 +44,6 @@ func createNewContext() (context.Context, context.CancelFunc) {
 }
 
 func main() {
-
 	opt, err := basePrompt()
 	if err != nil {
 		log.Fatalln(err)
@@ -52,6 +51,8 @@ func main() {
 
 	// Twitter
 	if opt == twitterOption {
+		tweetData.Limit = 500
+		tweetData.TweetResults = make(map[string]twitter.TweetScrapResult)
 		promptTweet()
 		// Tiktok
 	} else if opt == tiktokOption {

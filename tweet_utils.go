@@ -21,22 +21,65 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func tweetListener(ctx context.Context, tweet_results map[string]twitter.TweetScrapResult) {
+type ExecFn func(requestId network.RequestID, ctx2 context.Context)
+
+func tweetListener(ctx context.Context, responseKey string, exec ExecFn) error {
+	tweetRequestIdList := make([]network.RequestID, 0)
+
+	chromedp.ListenTarget(ctx, func(ev interface{}) {
+		switch responseReceivedEvent := ev.(type) {
+		case *network.EventResponseReceived:
+			response := responseReceivedEvent.Response
+			if strings.Contains(response.URL, responseKey) {
+				tweetRequestIdList = append(tweetRequestIdList, responseReceivedEvent.RequestID)
+			}
+		case *network.EventLoadingFinished:
+			if !slices.Contains(tweetRequestIdList, responseReceivedEvent.RequestID) {
+				break
+			} else {
+				tweetRequestIdList = slices.DeleteFunc(tweetRequestIdList, func(targetId network.RequestID) bool {
+					return targetId == responseReceivedEvent.RequestID
+				})
+				fc := chromedp.FromContext(ctx)
+				ctx2 := cdp.WithExecutor(ctx, fc.Target)
+				exec(responseReceivedEvent.RequestID, ctx2)
+			}
+		}
+	})
+	return nil
+}
+
+func exec(requestId network.RequestID, ctx2 context.Context) error {
+	byts, err := network.GetResponseBody(requestId).Do(ctx2)
+	if err != nil {
+		fmt.Println("No resource error")
+		return err
+	}
+	var tweetJson twitter.Response
+	err = json.Unmarshal(byts, &tweetJson)
+	if err == nil {
+		fmt.Println("Got new tweet data 😎! Saving now ....")
+		processTweetJSON(tweetJson)
+	}
+	return nil
+}
+
+func _tweetListener(ctx context.Context) {
 	tweetRequestIdList := make([]network.RequestID, 0)
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
 		switch responseReceivedEvent := ev.(type) {
 		case *network.EventResponseReceived:
 			response := responseReceivedEvent.Response
 			if strings.Contains(response.URL, "TweetDetail") {
-                tweetRequestIdList = append(tweetRequestIdList, responseReceivedEvent.RequestID)
+				tweetRequestIdList = append(tweetRequestIdList, responseReceivedEvent.RequestID)
 			}
 		case *network.EventLoadingFinished:
 			if !slices.Contains(tweetRequestIdList, responseReceivedEvent.RequestID) {
 				break
 			} else {
-                tweetRequestIdList = slices.DeleteFunc(tweetRequestIdList, func(targetId network.RequestID) bool {
-                    return targetId == responseReceivedEvent.RequestID
-                })
+				tweetRequestIdList = slices.DeleteFunc(tweetRequestIdList, func(targetId network.RequestID) bool {
+					return targetId == responseReceivedEvent.RequestID
+				})
 				fc := chromedp.FromContext(ctx)
 				ctx2 := cdp.WithExecutor(ctx, fc.Target)
 				var tweetJson twitter.Response
@@ -44,12 +87,12 @@ func tweetListener(ctx context.Context, tweet_results map[string]twitter.TweetSc
 					byts, err := network.GetResponseBody(responseReceivedEvent.RequestID).Do(ctx2)
 					if err != nil {
 						fmt.Println("No resource error")
-                        panic(err)
+						return err
 					}
 					err = json.Unmarshal(byts, &tweetJson)
 					if err == nil {
 						fmt.Println("Got new tweet data 😎! Saving now ....")
-						processTweetJSON(tweetJson, tweet_results)
+						processTweetJSON(tweetJson)
 					}
 					return nil
 				}()
@@ -58,17 +101,16 @@ func tweetListener(ctx context.Context, tweet_results map[string]twitter.TweetSc
 	})
 }
 
-func tweetActions(ctx context.Context, url string) error {
-	err := chromedp.Run(ctx,
-		openPage(url),
-	)
-	if err != nil {
-		return err
-	}
+func isReachingLimit() bool {
+	currLen := len(tweetData.TweetResults)
+	fmt.Println("Current length : ", currLen)
+	return currLen >= tweetData.Limit
+}
 
+func scrollUntilBottom(ctx context.Context) {
 	var isAlreadyOnTheBottom bool = false
-	for !isAlreadyOnTheBottom {
-		err := chromedp.Run(ctx, scrollDown())
+	for !isAlreadyOnTheBottom && !isReachingLimit() {
+		err := chromedp.Run(ctx, scrollTweetDown())
 		if err != nil {
 			break
 		}
@@ -78,10 +120,19 @@ func tweetActions(ctx context.Context, url string) error {
 		}))
 		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
+}
+
+func tweetActions(ctx context.Context, url string) error {
+	err := chromedp.Run(ctx,
+		openPage(url),
+	)
+	if err != nil {
+		return err
+	}
+	scrollUntilBottom(ctx)
 	return nil
 }
 
-// Todo : Make this function only : accept url and then return replies
 func handleSingleTweet(ctx context.Context, tweetUrl string) {
 	err := tweetActions(ctx, tweetUrl)
 	if err != nil {
@@ -90,11 +141,10 @@ func handleSingleTweet(ctx context.Context, tweetUrl string) {
 }
 
 func beginSingleTweet(tweetUrl string) {
-	var tweet_results = make(map[string]twitter.TweetScrapResult)
 
 	defer func() {
 		fmt.Println("Exporting to csv...")
-		fileName := exportTweetToCSV(tweet_results)
+		fileName := exportTweetToCSV()
 		fmt.Println("Successfully exported at : ", fileName)
 	}()
 
@@ -106,7 +156,23 @@ func beginSingleTweet(tweetUrl string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	tweetListener(ctx, tweet_results)
+	tweetListener(ctx, "TweetDetail", func(requestId network.RequestID, ctx2 context.Context) {
+		go func() error {
+			byts, err := network.GetResponseBody(requestId).Do(ctx2)
+			if err != nil {
+				fmt.Println("No resource error")
+				return err
+			}
+			var tweetJson twitter.Response
+			err = json.Unmarshal(byts, &tweetJson)
+			if err == nil {
+				fmt.Println("Got new tweet data 😎! Saving now ....")
+				err = processTweetJSON(tweetJson)
+			}
+			return nil
+		}()
+	},
+	)
 	handleSingleTweet(ctx, tweetUrl)
 }
 
@@ -171,11 +237,11 @@ func openPage(url string) chromedp.Tasks {
 
 var limitQueueLength int = 10
 
-func processTweetJSON(jsonData twitter.Response, tweet_results map[string]twitter.TweetScrapResult) {
+func processTweetJSON(jsonData twitter.Response) error {
 	var entries []twitter.Entry
 	instructions := jsonData.Data.ThreadedConversationsWithInjectionsV2.Instructions
 	if len(instructions) == 0 {
-		return
+		return nil
 	}
 	entries = instructions[0].Entries
 	for i := 0; i < len(entries); i++ {
@@ -183,20 +249,20 @@ func processTweetJSON(jsonData twitter.Response, tweet_results map[string]twitte
 		var item *twitter.ItemContent
 		if currentEntryContent.ItemContent != nil {
 			item = currentEntryContent.ItemContent
-			addToTweetResult(item, tweet_results)
+			addToTweetResult(item)
 		}
 
 		if currentEntryContent.Items != nil {
 			items := *currentEntryContent.Items
 			for j := 0; j < len(items); j++ {
 				item = items[j].Item.ItemContent
-				addToTweetResult(item, tweet_results)
+				addToTweetResult(item)
 			}
 		}
 	}
+	return nil
 }
 
-// Todo : do again until cleaned all
 func cleanupContent(content string) string {
 	if content == "" || content[0] != '@' {
 		return content
@@ -206,26 +272,26 @@ func cleanupContent(content string) string {
 		idx++
 	}
 	res := strings.Trim(content[idx:], " ")
-	return res
+	return cleanupContent(res)
 }
 
-func addToTweetResult(item *twitter.ItemContent, tweet_results map[string]twitter.TweetScrapResult) twitter.TweetScrapResult {
+func addToTweetResult(item *twitter.ItemContent) twitter.TweetScrapResult {
 	tweet := twitter.TweetScrapResult{
 		TweetId:   item.TweetResults.Result.RestId,
 		Author:    item.TweetResults.Result.Core.Results.Result.Legacy.Name,
 		Content:   cleanupContent(item.TweetResults.Result.Legacy.FullText),
 		UserIdStr: item.TweetResults.Result.Legacy.UserIdStr,
 	}
-	tweet_results[tweet.TweetId] = tweet
+	tweetData.TweetResults[tweet.TweetId] = tweet
 	return tweet
 }
 
-func exportTweetToCSV(tweet_results map[string]twitter.TweetScrapResult) string {
-	res := make([][]string, len(tweet_results)+1)
+func exportTweetToCSV() string {
+	res := make([][]string, len(tweetData.TweetResults)+1)
 	res[0] = []string{"Tweet_Id", "Author", "Content"}
 
 	var i int = 1
-	for _, val := range tweet_results {
+	for _, val := range tweetData.TweetResults {
 		res[i] = []string{val.TweetId, val.Author, val.Content}
 		i++
 	}
@@ -242,7 +308,7 @@ func exportTweetToCSV(tweet_results map[string]twitter.TweetScrapResult) string 
 	return fileName
 }
 
-func scrollDown() chromedp.Tasks {
+func scrollTweetDown() chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
 		chromedp.Evaluate(`document.evaluate("//span[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
@@ -256,80 +322,83 @@ func beginSearchTweet(opt *twitter.SearchOption) {
 	// ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
 
-	var wg sync.WaitGroup
 	searchUrl := constructSearchUrl(opt)
 	fmt.Println(searchUrl)
-	var tweet_results = make(map[string]twitter.TweetScrapResult)
-	var single_tweets = make([]string, 0)
-	tweetSearchListener(ctx, &single_tweets, tweet_results, &wg)
+	// var tweetData.TweetResults = make(map[string]twitter.TweetScrapResult)
+	var entry_list = make([]twitter.Entry, 0)
+	defer func() {
+		fmt.Println("Exporting to csv...")
+		fileName := exportTweetToCSV()
+		fmt.Println("Successfully exported at : ", fileName)
+	}()
+
+	// listening in search phase
+	var wg sync.WaitGroup
+	tweetListener(ctx, "SearchTimeline", func(requestId network.RequestID, ctx2 context.Context) {
+		wg.Add(1)
+		go func() error {
+			byts, err := network.GetResponseBody(requestId).Do(ctx2)
+			if err != nil {
+				return err
+			}
+			var searchResponse twitter.SearchResponse
+			err = json.Unmarshal(byts, &searchResponse)
+			if err == nil {
+				entries := searchResponse.Data.SearchByRawQuery.SearchTimeline.Timeline.Instructions[0].Entries
+				for _, entry := range entries {
+					if entry.Content.EntryType == "TimelineTimelineItem" {
+						fmt.Println("Got new tweet data 😎! Saving now ....")
+						entry_list = append(entry_list, entry)
+					}
+				}
+				wg.Done()
+				return nil
+			}
+			return nil
+		}()
+	})
 	err := chromedp.Run(ctx,
 		authenticateTwitter("auth_token", tweetData.AuthToken),
 		network.Enable(),
 		chromedp.Navigate(searchUrl),
 		chromedp.WaitReady(`body [aria-label='Timeline: Search timeline']`),
 	)
+	// Todo
+	// scrollUntilBottom(ctx)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	defer func() {
-		fmt.Println("Exporting to csv...")
-		fileName := exportTweetToCSV(tweet_results)
-		fmt.Println("Successfully exported at : ", fileName)
-	}()
-
-	wg.Wait()
-	tweetListener(ctx, tweet_results)
-	for i, tweetUrl := range single_tweets {
-		fmt.Println("Current idx : ", i)
-		handleSingleTweet(ctx, tweetUrl)
-	}
-}
-
-func tweetSearchListener(ctx context.Context, single_tweets *[]string, tweet_results map[string]twitter.TweetScrapResult, wg *sync.WaitGroup) {
-	var tweetRequestId network.RequestID = ""
-	chromedp.ListenTarget(ctx, func(ev interface{}) {
-		switch responseReceivedEvent := ev.(type) {
-		case *network.EventResponseReceived:
-			response := responseReceivedEvent.Response
-			if strings.Contains(response.URL, "SearchTimeline") {
-				tweetRequestId = responseReceivedEvent.RequestID
+	// Listen for incoming tweet
+	tweetListener(ctx, "TweetDetail", func(requestId network.RequestID, ctx2 context.Context) {
+		go func() error {
+			byts, err := network.GetResponseBody(requestId).Do(ctx2)
+			if err != nil {
+				fmt.Println("No resource error")
+				return err
 			}
-		case *network.EventLoadingFinished:
-			if tweetRequestId == "" {
-				break
-			} else {
-				tweetRequestId = ""
-				fc := chromedp.FromContext(ctx)
-				ctx2 := cdp.WithExecutor(ctx, fc.Target)
-				var searchResponse twitter.SearchResponse
-				wg.Add(1)
-				go func() error {
-					byts, err := network.GetResponseBody(responseReceivedEvent.RequestID).Do(ctx2)
-					if err != nil {
-						panic(err)
-					}
-					err = json.Unmarshal(byts, &searchResponse)
-					if err == nil {
-						entries := searchResponse.Data.SearchByRawQuery.SearchTimeline.Timeline.Instructions[0].Entries
-						for _, entry := range entries {
-							if entry.Content.EntryType == "TimelineTimelineItem" {
-								fmt.Println("Got new tweet data 😎! Saving now ....")
-								result := entry.Content.ItemContent.TweetResults.Result
-								tweetId := result.RestId
-								userId := result.Core.Results.Result.RestId
-								newTweetUrl := fmt.Sprintf("https://x.com/%s/status/%s", userId, tweetId)
-								*single_tweets = append(*single_tweets, newTweetUrl)
 
-								item := entry.Content.ItemContent
-								addToTweetResult(item, tweet_results)
-							}
-						}
-						wg.Done()
-					}
+			var tweetJson twitter.Response
+			err = json.Unmarshal(byts, &tweetJson)
+			if err == nil {
+				fmt.Println("Got new tweet data 😎! Saving now ....")
+				err = processTweetJSON(tweetJson)
+				if err != nil {
 					return nil
-				}()
+				}
 			}
-		}
+			return nil
+		}()
 	})
+	wg.Wait()
+	for _, entry := range entry_list {
+		result := entry.Content.ItemContent.TweetResults.Result
+		tweetId := result.RestId
+		userId := result.Core.Results.Result.RestId
+		item := entry.Content.ItemContent
+		addToTweetResult(item)
+		newTweetUrl := fmt.Sprintf("https://x.com/%s/status/%s", userId, tweetId)
+		handleSingleTweet(ctx, newTweetUrl)
+	}
+	// Todo : After this, figure out how to search again if there is still search limit
 }

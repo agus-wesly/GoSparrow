@@ -19,24 +19,25 @@ const (
 func promptTweet() {
 	var userOption int
 	if DEBUG {
-        userOption = searchTweet
+		userOption = searchTweet
 		tweetData.AuthToken = "c9bca772a8e05e076c17da20f126d22e042dae6b"
 	} else {
 		fmt.Print("Enter your twitter auth token : ")
 		fmt.Scanln(&tweetData.AuthToken)
 	}
 	ctx, acancel := createNewContext()
-    err := chromedp.Run(
-        ctx,
+	err := chromedp.Run(
+		ctx,
 		authenticateTwitter("auth_token", tweetData.AuthToken),
-	    verifyLoginTwitter(),
-    )
-    if err != nil {
-        fmt.Println("Auth token is invalid", err)
-        os.Exit(1)
-    }
-    acancel()
+		verifyLoginTwitter(),
+	)
+	if err != nil {
+		fmt.Println("Auth token is invalid", err)
+		os.Exit(1)
+	}
+	acancel()
 	if !DEBUG {
+		// Todo : handle default value and retry mechanism
 		fmt.Println("=====CHOOSE MODE=====")
 		fmt.Println("1. Search Mode")
 		fmt.Println("2. Single Tweet Mode")
@@ -49,10 +50,12 @@ func promptTweet() {
 
 	if userOption == singleTweet {
 		var twitterSingleOption twitter.SingleOption
-        twitterSingleOption.TweetUrl = "https://x.com/ctjlewis/status/1890113604806164798"
+		twitterSingleOption.TweetUrl = "https://x.com/Taibandeng_/status/1890018993458881003"
 		if !DEBUG {
 			fmt.Print("Enter your desired twitter url : ")
 			fmt.Scanln(&twitterSingleOption.TweetUrl)
+			fmt.Print("How many tweets do you want to retrieve ? [Default : 500] : ")
+			fmt.Scanln(&tweetData.Limit)
 		}
 		beginSingleTweet(twitterSingleOption.TweetUrl)
 	} else if userOption == searchTweet {
@@ -69,6 +72,7 @@ func promptTweet() {
 			if err != nil {
 				log.Fatalln(err)
 			}
+			// Todo : handle default value and retry mechanism
 			inputQuery = strings.TrimSpace(inputQuery)
 			twitterSearchOption.Query = inputQuery
 			fmt.Print("Minimum tweet replies (Default=0) : ")
@@ -77,10 +81,12 @@ func promptTweet() {
 			fmt.Scan(&twitterSearchOption.MinLikes)
 			fmt.Print("Language [en/id] (Default=en) : ")
 			fmt.Scan(&twitterSearchOption.Language)
+			fmt.Print("How many tweets do you want to retrieve ? [Default : 500] : ")
+			fmt.Scanln(&tweetData.Limit)
 		} else {
 			twitterSearchOption.Query = "var indonesia"
 			twitterSearchOption.MinReplies = 10
 		}
-        beginSearchTweet(&twitterSearchOption)
+		beginSearchTweet(&twitterSearchOption)
 	}
 }

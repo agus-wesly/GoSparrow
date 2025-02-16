@@ -2,6 +2,8 @@ package twitter
 
 type Tweet struct {
 	AuthToken string
+	Limit     int
+    TweetResults map[string]TweetScrapResult
 }
 
 type SingleOption struct {
@@ -26,7 +28,6 @@ type ResponseData struct {
 type ThreadedConversation struct {
 	Instructions []Instruction `json:"instructions"`
 }
-
 
 type Entry struct {
 	EntryId   string  `json:"entryId"`
@@ -76,7 +77,7 @@ type UserResults struct {
 }
 
 type UserResult struct {
-    RestId  string `json:"rest_id"`
+	RestId string           `json:"rest_id"`
 	Legacy UserResultLegacy `json:"legacy"`
 }
 
