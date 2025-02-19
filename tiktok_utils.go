@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/csv"
 	"encoding/json"
+	"example/hello/pkg/core"
 	"example/hello/pkg/tiktok"
 	"fmt"
 	"log"
@@ -22,7 +23,7 @@ import (
 
 func getFirstCommentPageUrl() string {
 	var firstPageUrl string
-	ctx, acancel := createNewContext()
+	ctx, acancel := core.CreateNewContext()
 	defer acancel()
 	// listen
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
@@ -54,7 +55,7 @@ var cursor int = 0
 func handleSingleTiktok() {
 	firstPageUrlString := getFirstCommentPageUrl()
 
-	ctx, acancel := createNewContext()
+	ctx, acancel := core.CreateNewContext()
 	defer acancel()
 
 	firstPageUrl, err := url.Parse(firstPageUrlString)

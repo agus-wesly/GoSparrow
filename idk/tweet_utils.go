@@ -141,7 +141,6 @@ func handleSingleTweet(ctx context.Context, tweetUrl string) {
 }
 
 func beginSingleTweet(tweetUrl string) {
-
 	defer func() {
 		fmt.Println("Exporting to csv...")
 		fileName := exportTweetToCSV()
@@ -176,52 +175,7 @@ func beginSingleTweet(tweetUrl string) {
 	handleSingleTweet(ctx, tweetUrl)
 }
 
-func verifyLoginTwitter() chromedp.Tasks {
-	var location string
-	return chromedp.Tasks{
-		chromedp.Navigate("https://x.com/explore"),
-		chromedp.WaitReady(`body`),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			act := chromedp.Location(&location)
-			err := act.Do(ctx)
-			if err != nil {
-				return err
-			}
-			if strings.Contains(location, "login") {
-				return errors.New("The auth token you provide is not valid")
-			}
-			return nil
-		}),
-	}
 
-}
-
-func authenticateTwitter(cookies ...string) chromedp.Tasks {
-	if len(cookies)%2 != 0 {
-		panic("Length must be divisible by 2")
-	}
-	expr := cdp.TimeSinceEpoch(time.Now().Add(3 * 24 * time.Hour))
-	return chromedp.Tasks{
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			for i := 0; i < len(cookies)-1; i++ {
-				err := network.SetCookie(cookies[i], cookies[i+1]).
-					WithDomain(".x.com").
-					WithHTTPOnly(true).
-					WithExpires(&expr).
-					WithSecure(true).
-					WithSameSite("strict").
-					WithPath("/").
-					Do(ctx)
-
-				if err != nil {
-					return err
-				}
-			}
-			return nil
-		}),
-	}
-
-}
 
 func openPage(url string) chromedp.Tasks {
 	fmt.Println("Opening window...")

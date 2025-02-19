@@ -1,22 +1,5 @@
 package twitter
 
-type Tweet struct {
-	AuthToken string
-	Limit     int
-    TweetResults map[string]TweetScrapResult
-}
-
-type SingleOption struct {
-	TweetUrl string
-}
-
-type SearchOption struct {
-	Query      string
-	MinReplies int
-	MinLikes   int
-	Language   string
-}
-
 type Response struct {
 	Data ResponseData `json:"data"`
 }
