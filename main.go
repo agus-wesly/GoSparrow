@@ -21,7 +21,10 @@ func main() {
 		Message: "Choose Social Media Mode",
 	}
 	var res int
-	prompt.Ask(&res)
+    err := prompt.Ask(&res)
+    if err != nil {
+        panic(err)
+    }
 	selectedSocialMedia := prompt.Opts[res]
 
 	if selectedSocialMedia == TWITTER {

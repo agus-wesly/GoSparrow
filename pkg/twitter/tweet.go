@@ -13,18 +13,14 @@ import (
 	"time"
 
 	"example/hello/pkg/core"
+	"example/hello/pkg/terminal"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 )
 
-var DEBUG bool = true
-
-const (
-	SEARCH_TWEET = iota
-	SINGLE_TWEET
-)
+var DEBUG bool = false
 
 type Tweet struct {
 	AuthToken    string
@@ -32,47 +28,59 @@ type Tweet struct {
 	TweetResults map[string]TweetScrapResult
 }
 
-func (t *Tweet) Init() {
+func (t *Tweet) init() {
 	t.Limit = 500
 	t.TweetResults = make(map[string]TweetScrapResult)
 }
 
-func (t *Tweet) Begin() {
-    t.Init()
-
-	var userOption int
+func (t *Tweet) getTokenFromUser() {
 	if DEBUG {
-		userOption = SEARCH_TWEET
 		t.AuthToken = "c9bca772a8e05e076c17da20f126d22e042dae6b"
 	} else {
 		fmt.Print("Enter your twitter auth token : ")
 		fmt.Scanln(&t.AuthToken)
 	}
+}
+
+const (
+	SEARCH_MODE = "Search Mode"
+	SINGLE_MODE = "Single Mode"
+)
+
+func (t *Tweet) getModeFromUser() string {
 	if !DEBUG {
-		// Todo : handle default value and retry mechanism
-		fmt.Println("=====CHOOSE MODE=====")
-		fmt.Println("1. Search Mode")
-		fmt.Println("2. Single Tweet Mode")
-		fmt.Print("Your Option : ")
-		fmt.Scanln(&userOption)
+		var res int
+		s := terminal.Select{
+			Opts:    []string{SEARCH_MODE, SINGLE_MODE},
+			Message: "Choose Mode",
+		}
+		s.Ask(&res)
+		return s.Opts[res]
 	}
-	if userOption == SINGLE_TWEET {
+	return SINGLE_MODE
+}
+
+func (t *Tweet) Begin() {
+	t.init()
+	t.getTokenFromUser()
+	mode := t.getModeFromUser()
+	if mode == SINGLE_MODE {
 		tweetSingle := TweetSingleOption{
 			Tweet: *t,
 		}
 		tweetSingle.Prompt()
-	} else if userOption == SEARCH_TWEET {
+	} else if mode == SEARCH_MODE {
 		twitterSearch := TweetSearchOption{
-            Tweet: *t,
+			Tweet:      *t,
 			MinReplies: 0,
 			Query:      "",
 			MinLikes:   0,
 			Language:   "en",
 		}
-        twitterSearch.Prompt()
+		twitterSearch.Prompt()
 	} else {
-        log.Fatalln("Unknown option")
-    }
+		panic("Unknown option")
+	}
 }
 
 func (t *Tweet) SetupToken() {
@@ -170,7 +178,6 @@ func (t *Tweet) scrollUntilBottom(ctx context.Context) {
 		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
 }
-
 
 type ExecFn func(requestId network.RequestID, ctx2 context.Context)
 
@@ -270,4 +277,3 @@ func cleanupContent(content string) string {
 	res := strings.Trim(content[idx:], " ")
 	return cleanupContent(res)
 }
-

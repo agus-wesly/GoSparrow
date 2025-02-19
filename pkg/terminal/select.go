@@ -6,7 +6,6 @@ package terminal
 
 import (
 	"errors"
-	// "fmt"
 	"os"
 )
 
@@ -74,10 +73,13 @@ var SelectQuestionTemplate = `
 {{end}}
 {{- color .Config.Icons.Question.Format }}{{ .Config.Icons.Question.Text }} {{color "reset"}}
 {{- color "default+hb"}}{{ .Message }}{{color "reset"}}
-{{- "  "}}{{- color "cyan"}}[Use arrows to move]{{color "reset"}}
-{{- "\n"}}
-{{- range $ix, $option := .PageEntries}}
-    {{- template "option" $.IterateOption $ix $option}}
+{{- if .ShowAnswer}}{{color "cyan"}} {{.Answer}}{{color "reset"}}{{"\n"}}
+{{- else}}
+    {{- "  "}}{{- color "cyan"}}[Use arrows to move]{{color "reset"}}
+    {{- "\n"}}
+    {{- range $ix, $option := .PageEntries}}
+        {{- template "option" $.IterateOption $ix $option}}
+    {{- end}}
 {{- end}}`
 
 // OptionAnswer is the return type of Selects/MultiSelects that lets the appropriate information
@@ -113,6 +115,8 @@ type SelectTemplateData struct {
 	PageEntries   []OptionAnswer
 	SelectedIndex int
 	Config        *PromptConfig
+	Answer        string
+	ShowAnswer    bool
 
 	// These fields are used when rendering an individual option
 	CurrentOpt   OptionAnswer
@@ -140,18 +144,35 @@ func (s *Select) Ask(result *int) error {
 	if err != nil {
 		return err
 	}
-	s.Clear()
+	err = s.Clear(resp, &option.PromptConfig)
+	if err != nil {
+		return err
+	}
 	*result = resp
 	return nil
 }
 
-func (s *Select) Clear() {
+func (s *Select) Clear(resp int, config *PromptConfig) error {
 	cursor := s.NewCursor()
 	cursor.Restore()
-	r := s.Renderer
-	lineCount := r.countLines(r.renderedText)
-	r.resetPrompt(lineCount)
-	r.renderedText.Reset()
+	err := s.Render(
+		SelectQuestionTemplate,
+		SelectTemplateData{
+			Select:     *s,
+			Answer:     s.Opts[resp],
+			ShowAnswer: true,
+			Config:     config,
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+
+	// r := s.Renderer
+	// lineCount := r.countLines(r.renderedText)
+	// r.resetPrompt(lineCount)
+	// r.renderedText.Reset()
 }
 
 func (s *Select) Prompt(config *PromptConfig) (int, error) {
@@ -224,4 +245,3 @@ func (s *Select) OnKeyPressed(key rune, config *PromptConfig, opts []OptionAnswe
 	_ = s.RenderWithCursorOffset(SelectQuestionTemplate, tmpData, opts, s.selectedIndex)
 	return false
 }
-
