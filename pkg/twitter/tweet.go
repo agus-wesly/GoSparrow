@@ -75,6 +75,7 @@ func (t *Tweet) Begin() {
 			Tweet: *t,
 		}
 		tweetSingle.Prompt()
+        tweetSingle.BeginSingleTweet()
 	} else if mode == SEARCH_MODE {
 		twitterSearch := TweetSearchOption{
 			Tweet:      *t,

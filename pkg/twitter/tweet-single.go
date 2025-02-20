@@ -25,7 +25,6 @@ func (t *TweetSingleOption) Prompt() {
 		fmt.Print("How many tweets do you want to retrieve ? [Default : 500] : ")
 		fmt.Scanln(&t.Limit)
 	}
-    t.BeginSingleTweet()
 }
 
 

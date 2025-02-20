@@ -2,8 +2,8 @@ package main
 
 import (
 	"example/hello/pkg/terminal"
+	"example/hello/pkg/tiktok"
 	"example/hello/pkg/twitter"
-	"log"
 )
 
 const (
@@ -35,13 +35,8 @@ func main() {
 		t := twitter.Tweet{}
 		t.Begin()
 	} else if selectedSocialMedia == TIKTOK {
-		opt_tiktok, err_tiktok := promptTiktok()
-		if err_tiktok != nil {
-			log.Fatalln(err_tiktok)
-		}
-		if opt_tiktok == singleTiktok {
-			handleSingleTiktok()
-		}
+        t := tiktok.Tiktok{}
+        t.Begin()
 	}
 	// ctx, cancel = context.WithTimeout(ctx, 50*time.Second)
 	// defer cancel()

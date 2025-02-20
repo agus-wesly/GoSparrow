@@ -1,6 +1,6 @@
 package tiktok
 
-type Response struct {
+type ResponseJson struct {
 	Comments []Comment `json:"comments"`
     HasMore     int     `json:"has_more"`
     Cursor      int     `json:"cursor"`
@@ -22,9 +22,4 @@ type TiktokScrapResult struct {
 	Author    string `json:"username"`
 	Content   string `json:"content"`
 	UserIdStr string `json:"user_id_str"`
-}
-
-type TiktokData struct {
-	TiktokUrl   string
-	TiktokQuery string
 }
