@@ -23,26 +23,35 @@ type TweetSearchOption struct {
 }
 
 func (t *TweetSearchOption) Prompt() {
-
 	if !DEBUG {
 		inp := terminal.Input{Message: "Enter your tweet search keyword : ", Validator: terminal.Required}
-		err := inp.Ask(&t.Query)
-		if err != nil {
+		if err := inp.Ask(&t.Query); err != nil {
 			panic(err)
 		}
 		inp = terminal.Input{Message: "Minimum tweet replies (Default=0) : ", Default: "0", Validator: terminal.IsNumber}
-		inp.Ask(&t.MinReplies)
+		if err := inp.Ask(&t.MinReplies); err != nil {
+			panic(err)
+		}
 		inp = terminal.Input{Message: "Minimum tweet likes (Default=0) : ", Default: "0", Validator: terminal.IsNumber}
-		inp.Ask(&t.MinLikes)
+		if err := inp.Ask(&t.MinLikes); err != nil {
+			panic(err)
+		}
 		inp = terminal.Input{Message: "Language [en/id] (Default=en) : ", Default: "en"}
-		inp.Ask(&t.Language)
-		inp = terminal.Input{Message: "How many tweets do you want to retrieve ? [Default : 500] : ", Default: "500", Validator: terminal.IsNumber}
-		inp.Ask(&t.Limit)
+		if err := inp.Ask(&t.Language); err != nil {
+			panic(err)
+		}
+		inp = terminal.Input{
+			Message:   "How many tweets do you want to retrieve ? [Default : 500] : ",
+			Default:   "500",
+			Validator: terminal.IsNumber,
+        }
+		if err := inp.Ask(&t.Limit); err != nil {
+			panic(err)
+		}
 	} else {
 		t.Query = "var indonesia"
 		t.MinReplies = 10
 	}
-	fmt.Println(t)
 }
 
 func (t *TweetSearchOption) constructSearchUrl() string {
