@@ -14,6 +14,13 @@ type Renderer struct {
 	renderedText   bytes.Buffer
 }
 
+type ErrorTemplateData struct {
+	Error error
+	Icon  Icon
+}
+var ErrorTemplate = `{{color .Icon.Format }}{{ .Icon.Text }} Sorry, your reply was invalid: {{ .Error.Error }}{{color "reset"}}
+`
+
 func (r *Renderer) WithStd(stdio Stdio) {
     r.stdio = stdio
 }
@@ -55,6 +62,9 @@ func (r *Renderer) AppendRenderedText(layoutOut string) {
     r.renderedText.WriteString(layoutOut)
 }
 
+func (r *Renderer) appendRenderedError(text string) {
+	r.renderedErrors.WriteString(text)
+}
 
 func (r *Renderer) countLines(buf bytes.Buffer) int {
 	w := r.termWidthSafe()
@@ -125,3 +135,30 @@ func (r *Renderer) termWidth() (int, error) {
 	return termWidth, err
 }
 
+func (r *Renderer) Error(config *PromptConfig, invalid error) error {
+	// cleanup the currently rendered errors
+	r.resetPrompt(r.countLines(r.renderedErrors))
+	r.renderedErrors.Reset()
+
+	// cleanup the rest of the prompt
+	r.resetPrompt(r.countLines(r.renderedText))
+	r.renderedText.Reset()
+
+	userOut, layoutOut, err := RunTemplate(ErrorTemplate, &ErrorTemplateData{
+		Error: invalid,
+		Icon:  config.Icons.Error,
+	})
+	if err != nil {
+		return err
+	}
+
+	// send the message to the user
+	if _, err := fmt.Fprint(r.stdio.Out, userOut); err != nil {
+		return err
+	}
+
+	// add the printed text to the rendered error buffer so we can cleanup later
+	r.appendRenderedError(layoutOut)
+
+	return nil
+}

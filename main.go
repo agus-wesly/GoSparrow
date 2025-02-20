@@ -15,16 +15,29 @@ var foo []string
 
 var DEBUG bool = false
 
+var Test struct {
+	Foo string
+}
+
 func main() {
+    var resp string
+    inp := terminal.Input{Message: "Enter your tweet search keyword : ", Required: true}; 
+    err := inp.Ask(&resp)
+    if err != nil {
+        log.Fatalln(err)
+    }
+    if true {
+        return
+    }
 	prompt := terminal.Select{
 		Opts:    []string{TWITTER, TIKTOK},
 		Message: "Choose Social Media Mode",
 	}
 	var res int
-    err := prompt.Ask(&res)
-    if err != nil {
-        panic(err)
-    }
+	err = prompt.Ask(&res)
+	if err != nil {
+		panic(err)
+	}
 	selectedSocialMedia := prompt.Opts[res]
 
 	if selectedSocialMedia == TWITTER {

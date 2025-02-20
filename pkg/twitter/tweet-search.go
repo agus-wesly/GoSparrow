@@ -1,15 +1,13 @@
 package twitter
 
 import (
-	"bufio"
 	"context"
 	"encoding/json"
 	"example/hello/pkg/core"
+	"example/hello/pkg/terminal"
 	"fmt"
 	"log"
 	"net/url"
-	"os"
-	"strings"
 	"sync"
 
 	"github.com/chromedp/cdproto/network"
@@ -26,28 +24,24 @@ type TweetSearchOption struct {
 
 func (t *TweetSearchOption) Prompt() {
 	if !DEBUG {
-		fmt.Print("Enter your tweet search keyword : ")
-		in := bufio.NewReader(os.Stdin)
-		inputQuery, err := in.ReadString('\n')
-		if err != nil {
-			log.Fatalln(err)
-		}
-		// Todo : handle default value and retry mechanism
-		inputQuery = strings.TrimSpace(inputQuery)
-		t.Query = inputQuery
-		fmt.Print("Minimum tweet replies (Default=0) : ")
-		fmt.Scan(&t.MinReplies)
-		fmt.Print("Minimum tweet likes (Default=0) : ")
-		fmt.Scan(&t.MinLikes)
-		fmt.Print("Language [en/id] (Default=en) : ")
-		fmt.Scan(&t.Language)
-		fmt.Print("How many tweets do you want to retrieve ? [Default : 500] : ")
-		fmt.Scanln(&t.Limit)
+        inp := terminal.Input{Message: "Enter your tweet search keyword : ", Required: true}; 
+        a := &t.Query
+        err := inp.Ask(a);
+        if err != nil {
+            panic(err)
+        }
+        fmt.Println(t.Query)
+        if true {
+            log.Fatalln("yes") 
+        }
+        inp = terminal.Input{Message: "Minimum tweet replies (Default=0) : "}; inp.Ask(t.MinReplies)
+        inp = terminal.Input{Message: "Minimum tweet likes (Default=0) : "}; inp.Ask(t.MinLikes)
+        inp = terminal.Input{Message: "Language [en/id] (Default=en) : "}; inp.Ask(t.Language)
+        inp = terminal.Input{Message: "How many tweets do you want to retrieve ? [Default : 500] : "}; inp.Ask(t.Limit)
 	} else {
 		t.Query = "var indonesia"
 		t.MinReplies = 10
 	}
-    t.beginSearchTweet()
 }
 
 func (t *TweetSearchOption) constructSearchUrl() string {
@@ -63,7 +57,7 @@ func (t *TweetSearchOption) constructSearchUrl() string {
 	return parsed.String()
 }
 
-func (t *TweetSearchOption) beginSearchTweet() {
+func (t *TweetSearchOption) BeginSearchTweet() {
 	ctx, cancel := core.CreateNewContext()
 	// ctx, cancel := context.WithTimeout(ctx, 20*time.Second)
 	defer cancel()
@@ -115,6 +109,7 @@ func (t *TweetSearchOption) beginSearchTweet() {
 		log.Fatalln(err)
 	}
 
+	wg.Wait()
 	// Listen for incoming tweet
 	t.Listener(ctx, "TweetDetail", func(requestId network.RequestID, ctx2 context.Context) {
 		go func() error {
@@ -136,7 +131,6 @@ func (t *TweetSearchOption) beginSearchTweet() {
 			return nil
 		}()
 	})
-	wg.Wait()
 	for _, entry := range entry_list {
 		item := entry.Content.ItemContent
 		t.addToTweetResult(item)
@@ -148,7 +142,7 @@ func (t *TweetSearchOption) beginSearchTweet() {
 			TweetUrl: fmt.Sprintf("https://x.com/%s/status/%s", userId, tweetId),
 			Context:  ctx,
 		}
-		newTweet.BeginSingleTweet()
+		newTweet.handleSingleTweet()
 	}
 	// Todo : After this, figure out how to search again if there is still search limit
 }

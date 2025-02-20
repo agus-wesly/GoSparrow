@@ -78,6 +78,7 @@ func (t *Tweet) Begin() {
 			Language:   "en",
 		}
 		twitterSearch.Prompt()
+        twitterSearch.BeginSearchTweet()
 	} else {
 		panic("Unknown option")
 	}
