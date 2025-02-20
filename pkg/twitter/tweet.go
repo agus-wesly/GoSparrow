@@ -37,8 +37,14 @@ func (t *Tweet) getTokenFromUser() {
 	if DEBUG {
 		t.AuthToken = "c9bca772a8e05e076c17da20f126d22e042dae6b"
 	} else {
-		fmt.Print("Enter your twitter auth token : ")
-		fmt.Scanln(&t.AuthToken)
+        inp := terminal.Input{
+            Message: "Enter your twitter auth token ",
+            Validator: terminal.Required,
+        }
+        err := inp.Ask(&t.AuthToken)
+        if err != nil {
+            panic(err)
+        }
 	}
 }
 

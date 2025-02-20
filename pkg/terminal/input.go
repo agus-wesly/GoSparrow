@@ -2,20 +2,18 @@ package terminal
 
 import (
 	"bufio"
-	"bytes"
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"strconv"
 	"strings"
-	"text/template"
 )
 
 type Input struct {
 	Renderer
-	Message  string
-	Required bool
+	Message   string
+	Default   string
+	Validator func(x interface{}) error
 }
 
 type InputTemplateData struct {
@@ -37,24 +35,25 @@ func (input *Input) Ask(resp interface{}) error {
 	input.Renderer.WithStd(option.Stdio)
 	var validationError error
 	var answer interface{}
+	var err error
 	for {
 		if validationError != nil {
 			if err := input.Error(&option.PromptConfig, validationError); err != nil {
 				return err
 			}
 		}
-        answer, err := input.Prompt(&option.PromptConfig)
+		answer, err = input.Prompt(&option.PromptConfig)
 		if err != nil {
 			return err
 		}
-		if input.Required {
-			validationError = EnsureNotEmpty(answer)
+		if input.Validator != nil {
+			validationError = input.Validator(answer) 
 		}
 		if validationError == nil {
 			break
 		}
 	}
-    err := input.WriteAnswer(resp, answer)
+	err = input.WriteAnswer(resp, answer)
 	if err != nil {
 		return err
 	}
@@ -106,20 +105,6 @@ func (input *Input) Clear(resp interface{}, config *PromptConfig) error {
 	return nil
 }
 
-func (input *Input) _Render(data *InputTemplateData) error {
-	templ, err := template.New("prompt").Funcs(TemplateFuncsWithColor).Parse(InputQuestionTemplate)
-	res := bytes.NewBufferString("")
-	err = templ.Execute(res, data)
-	if err != nil {
-		return err
-	}
-	_, err = fmt.Fprint(input.Renderer.stdio.Out, res.String())
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func (input *Input) Prompt(config *PromptConfig) (interface{}, error) {
 	inp := InputTemplateData{
 		Input:      *input,
@@ -134,6 +119,9 @@ func (input *Input) Prompt(config *PromptConfig) (interface{}, error) {
 		return nil, err
 	}
 	inputQuery, err := input.Read()
+	if IsEmpty(inputQuery) {
+		return input.Default, nil
+	}
 	return inputQuery, nil
 }
 
@@ -147,9 +135,9 @@ func (input *Input) Read() (string, error) {
 	return inputQuery, nil
 }
 
-func EnsureNotEmpty(val interface{}) error {
+func IsEmpty(val interface{}) bool {
 	if val == "" || val == nil {
-		return errors.New("Value is Required")
+		return true
 	}
-	return nil
+	return false
 }
