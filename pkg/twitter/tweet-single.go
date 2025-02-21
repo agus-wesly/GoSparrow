@@ -43,6 +43,7 @@ func (t *TweetSingleOption) handleSingleTweet() {
 		openTweetPage(t.TweetUrl),
 	)
 	if err != nil {
+        panic(err)
 	}
 	t.scrollUntilBottom(t.Context)
 }

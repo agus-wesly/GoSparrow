@@ -159,7 +159,7 @@ func openTweetPage(url string) chromedp.Tasks {
 
 func (t *Tweet) isReachingLimit() bool {
 	currLen := len(t.TweetResults)
-	fmt.Println("Current length : ", currLen)
+	fmt.Println("Current length : ", currLen, t.Limit)
 	return currLen >= t.Limit
 }
 
@@ -168,7 +168,8 @@ func (t *Tweet) scroll() chromedp.Tasks {
 		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
 		chromedp.Evaluate(`document.evaluate("//span[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
 		chromedp.Evaluate(`document.evaluate("//button[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
-		chromedp.Sleep(2 * time.Second),
+        // todo : wait for another tweet to coming ??
+		chromedp.Sleep(3 * time.Second),
 	}
 }
 
