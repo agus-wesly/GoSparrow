@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"example/hello/pkg/core"
+	"example/hello/pkg/terminal"
 	"fmt"
 	"log"
 
@@ -12,21 +13,31 @@ import (
 )
 
 type TweetSingleOption struct {
-    Tweet
+	Tweet
 	TweetUrl string
-    Context context.Context
+	Context  context.Context
 }
 
 func (t *TweetSingleOption) Prompt() {
 	t.TweetUrl = "https://x.com/Taibandeng_/status/1890018993458881003"
 	if !DEBUG {
-		fmt.Print("Enter your desired twitter url : ")
-		fmt.Scanln(&t.TweetUrl)
-		fmt.Print("How many tweets do you want to retrieve ? [Default : 500] : ")
-		fmt.Scanln(&t.Limit)
+		inp := terminal.Input{
+			Message:   "Enter your desired twitter url",
+			Validator: terminal.Required,
+		}
+		if err := inp.Ask(&t.TweetUrl); err != nil {
+			panic(err)
+		}
+		inp = terminal.Input{
+			Message:   "How many tweets do you want to retrieve ? [Default : 500]",
+			Validator: terminal.IsNumber,
+			Default:   "500",
+		}
+		if err := inp.Ask(&t.Limit); err != nil {
+			panic(err)
+		}
 	}
 }
-
 
 func (t *TweetSingleOption) handleSingleTweet() {
 	err := chromedp.Run(t.Context,
@@ -46,7 +57,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 
 	ctx, acancel := core.CreateNewContext()
 	defer acancel()
-    t.Context = ctx
+	t.Context = ctx
 
 	err := chromedp.Run(t.Context,
 		t.AttachAuthToken(),

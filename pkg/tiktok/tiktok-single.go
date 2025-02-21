@@ -17,7 +17,7 @@ import (
 )
 
 type TiktokSingleOption struct {
-	Tiktok
+	*Tiktok
 	TiktokUrl string
 	HasMore   bool
 	Cursor    int
@@ -38,18 +38,22 @@ func (t *TiktokSingleOption) Prompt() {
 }
 
 func (t *TiktokSingleOption) BeginSingleTiktok() {
-	err := t.getFirstCommentUrl()
-	if err != nil {
-		panic(err)
-	}
-	ctx, acancel := core.CreateNewContext()
-	defer acancel()
 	defer func() {
 		_, err := t.exportResultToCSV()
 		if err != nil {
 			panic(err)
 		}
 	}()
+    t.handleSingleTiktok()
+}
+
+func (t *TiktokSingleOption) handleSingleTiktok() {
+	err := t.getFirstCommentUrl()
+	if err != nil {
+		panic(err)
+	}
+	ctx, acancel := core.CreateNewContext()
+	defer acancel()
 
 	t.listenForReplies(ctx)
 
@@ -115,6 +119,8 @@ func (t *TiktokSingleOption) getFirstCommentUrl() error {
 	})
 	err = chromedp.Run(ctx,
 		network.Enable(),
+        // todo : figure out the tiktok video url to be blocked 
+        network.SetBlockedURLS([]string{"https://v*-webapp-prime.tiktok.com/video"}),
 		chromedp.Navigate(t.TiktokUrl),
 		chromedp.WaitReady(`.css-7whb78-DivCommentListContainer`),
         chromedp.Sleep(2*time.Second),
@@ -147,5 +153,5 @@ func (t *TiktokSingleOption) processReplies(tiktokJson ResponseJson) {
 			UserIdStr: comment.User.UniqueId,
 		})
 	}
-	t.TiktokResults = append(t.TiktokResults, res...)
+	t.Tiktok.Results = append(t.Tiktok.Results, res...)
 }

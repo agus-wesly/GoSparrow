@@ -9,11 +9,10 @@ import (
 	"time"
 )
 
-var DEBUG = false
+var DEBUG = true
 
 type Tiktok struct {
-	TiktokQuery string
-	TiktokResults   []TiktokScrapResult
+	Results   []TiktokScrapResult
 }
 
 var (
@@ -22,12 +21,12 @@ var (
 )
 
 func (t *Tiktok) Setup()  {
-    t.TiktokResults = make([]TiktokScrapResult, 0)
+    t.Results = make([]TiktokScrapResult, 0)
 }
 
 func (t *Tiktok) Begin()  {
 	var mode string
-	mode = SINGLE_MODE
+	mode = SEARCH_MODE
 	if !DEBUG {
 		opt := terminal.Select{
 			Opts:    []string{SEARCH_MODE, SINGLE_MODE},
@@ -39,10 +38,12 @@ func (t *Tiktok) Begin()  {
 	}
     t.Setup()
 	if mode == SEARCH_MODE {
-		panic("Search mode is not yet implemented")
+        tiktokSearch := TiktokSearchOption{Tiktok: t}
+        tiktokSearch.Prompt()
+        tiktokSearch.BeginSearchTiktok()
 	} else if mode == SINGLE_MODE {
         tiktokSingle := TiktokSingleOption{
-            Tiktok: *t,
+            Tiktok: t,
             HasMore: true,
         }
         tiktokSingle.Prompt()
@@ -55,11 +56,11 @@ func (t *Tiktok) Begin()  {
 
 func (t *Tiktok) exportResultToCSV() (string, error) {
 	fmt.Println("Starting the export process...")
-	res := make([][]string, len(t.TiktokResults)+1)
+	res := make([][]string, len(t.Results)+1)
 	res[0] = []string{"Tiktok_ID", "Author", "Comment"}
 
 	var i int = 1
-	for _, val := range t.TiktokResults {
+	for _, val := range t.Results {
 		res[i] = []string{val.TiktokId, val.Author, val.Content}
 		i++
 	}

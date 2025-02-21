@@ -24,8 +24,8 @@ type InputTemplateData struct {
 }
 
 var InputQuestionTemplate = `
-{{- color .Config.Icons.Question.Format }}{{ .Config.Icons.Question.Text }} {{color "reset"}}
-{{- color "default+hb"}}{{ .Message }} {{color "reset"}}
+    {{- color .Config.Icons.Question.Format }}{{ .Config.Icons.Question.Text }}  {{color "reset"}}
+    {{- color "default+hb"}}{{ .Message }} : {{color "reset"}}
 {{- if .ShowAnswer}}
   {{- color "cyan"}}{{.Answer}}{{color "reset"}}{{"\n"}}
 {{- end}}`
@@ -47,7 +47,7 @@ func (input *Input) Ask(resp interface{}) error {
 			return err
 		}
 		if input.Validator != nil {
-			validationError = input.Validator(answer) 
+			validationError = input.Validator(answer)
 		}
 		if validationError == nil {
 			break
