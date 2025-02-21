@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-var DEBUG = true
+var DEBUG = false
 
 type Tiktok struct {
 	Results   []TiktokScrapResult

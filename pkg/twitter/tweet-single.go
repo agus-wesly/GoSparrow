@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 )
 
@@ -65,21 +64,13 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	t.Listener(ctx, "TweetDetail", func(requestId network.RequestID, ctx2 context.Context) {
-		go func() error {
-			byts, err := network.GetResponseBody(requestId).Do(ctx2)
-			if err != nil {
-				fmt.Println("No resource error")
-				return err
-			}
-			var tweetJson Response
-			err = json.Unmarshal(byts, &tweetJson)
-			if err == nil {
-				fmt.Println("Got new tweet data 😎! Saving now ....")
-				err = t.processTweetJSON(tweetJson)
-			}
-			return nil
-		}()
+	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
+		var tweetJson Response
+		err = json.Unmarshal(byts, &tweetJson)
+		if err == nil {
+			fmt.Println("Got new tweet data 😎! Saving now ....")
+			err = t.processTweetJSON(tweetJson)
+		}
 	},
 	)
 	t.handleSingleTweet()

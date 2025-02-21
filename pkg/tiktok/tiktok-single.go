@@ -44,7 +44,7 @@ func (t *TiktokSingleOption) BeginSingleTiktok() {
 			panic(err)
 		}
 	}()
-    t.handleSingleTiktok()
+	t.handleSingleTiktok()
 }
 
 func (t *TiktokSingleOption) handleSingleTiktok() {
@@ -52,11 +52,10 @@ func (t *TiktokSingleOption) handleSingleTiktok() {
 	if err != nil {
 		panic(err)
 	}
-	ctx, acancel := core.CreateNewContext()
+	ctx, acancel := core.CreateNewContextWithTimeout(2 * time.Minute)
 	defer acancel()
 
 	t.listenForReplies(ctx)
-
 	chromedp.Run(
 		ctx,
 		network.Enable(),
@@ -64,10 +63,12 @@ func (t *TiktokSingleOption) handleSingleTiktok() {
 	for t.HasMore {
 		err := chromedp.Run(ctx,
 			chromedp.Navigate(t.updateUrl()),
+			// todo : this can fail, maybe we can make a timeout ?
 			chromedp.WaitVisible(`body pre`),
 			chromedp.Sleep(1*time.Second),
 		)
 		if err != nil {
+            fmt.Println("Error : ", err)
 			break
 		}
 	}
@@ -119,11 +120,10 @@ func (t *TiktokSingleOption) getFirstCommentUrl() error {
 	})
 	err = chromedp.Run(ctx,
 		network.Enable(),
-        // todo : figure out the tiktok video url to be blocked 
-        network.SetBlockedURLS([]string{"https://v*-webapp-prime.tiktok.com/video"}),
+		network.SetBlockedURLS([]string{"https://v*-webapp-prime.tiktok.com/video"}),
 		chromedp.Navigate(t.TiktokUrl),
 		chromedp.WaitReady(`.css-7whb78-DivCommentListContainer`),
-        chromedp.Sleep(2*time.Second),
+		chromedp.Sleep(2*time.Second),
 	)
 	return err
 }
@@ -139,7 +139,6 @@ func (t *TiktokSingleOption) updateUrl() string {
 	q := t.FirstCommentUrl.Query()
 	q.Set("cursor", strconv.Itoa(t.Cursor))
 	t.FirstCommentUrl.RawQuery = q.Encode()
-	fmt.Println(t.FirstCommentUrl.String())
 	return t.FirstCommentUrl.String()
 }
 

@@ -38,6 +38,4 @@ func main() {
         t := tiktok.Tiktok{}
         t.Begin()
 	}
-	// ctx, cancel = context.WithTimeout(ctx, 50*time.Second)
-	// defer cancel()
 }
