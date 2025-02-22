@@ -13,7 +13,7 @@ const (
 
 var foo []string
 
-var DEBUG bool = true
+var DEBUG bool = false
 
 var Test struct {
 	Foo string

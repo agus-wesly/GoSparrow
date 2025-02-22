@@ -5,9 +5,9 @@ import (
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"fmt"
-	"log"
 	"net/url"
 	"sync"
+	"time"
 
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
@@ -56,7 +56,7 @@ func (t *TweetSearchOption) Prompt() {
 func (t *TweetSearchOption) constructSearchUrl() string {
 	parsed, err := url.Parse("https://x.com/search")
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 	query := parsed.Query()
 	res := fmt.Sprintf("%s min_replies:%d min_faves:%d lang:%s", t.Query, t.MinReplies, t.MinLikes, t.Language)
@@ -70,7 +70,6 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 	t.SetupToken()
 
 	ctx, cancel := core.CreateNewContext()
-	defer cancel()
 
 	err := chromedp.Run(ctx, t.AttachAuthToken())
 	if err != nil {
@@ -78,12 +77,9 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 	}
 
 	searchUrl := t.constructSearchUrl()
-	fmt.Println(searchUrl)
 	var entry_list = make([]Entry, 0)
 	defer func() {
-		fmt.Println("Exporting to csv...")
-		fileName := t.ExportToCSV()
-		fmt.Println("Successfully exported at : ", fileName)
+		t.ExportToCSV()
 	}()
 
 	// listening in search phase
@@ -99,30 +95,35 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 						entry_list = append(entry_list, entry)
 					}
 				}
-				fmt.Printf("Done searching, found %d data \n", len(entries))
+				t.Log.Success("Done searching, found ", len(entries), " related tweet")
 				wg.Done()
 				return nil
 			}
 			return nil
 		}()
 	}, &wg)
-	fmt.Printf("Searching for tweets...\n")
+	t.Log.Info("Searching for tweets...")
 	err = chromedp.Run(ctx,
 		network.Enable(),
 		chromedp.Navigate(searchUrl),
 		chromedp.WaitReady(`body [aria-label='Timeline: Search timeline']`),
 	)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
+	cancel()
 
 	wg.Wait()
+	// create a new context ?
+	ctx, cancel = core.CreateNewContextWithTimeout(2 * time.Minute)
+	defer cancel()
+	chromedp.Run(ctx, t.AttachAuthToken())
 	// Listen for incoming tweet
 	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
 		var tweetJson Response
 		err = json.Unmarshal(byts, &tweetJson)
 		if err == nil {
-			fmt.Println("Got new tweet data 😎! Saving now ....")
+			t.Log.Success("Got new replies 😎! Current Replies : ", len(t.TweetResults))
 			err = t.processTweetJSON(tweetJson)
 		}
 	}, nil)
@@ -136,9 +137,13 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 		newTweet := TweetSingleOption{
 			Tweet:    t.Tweet,
 			TweetUrl: fmt.Sprintf("https://x.com/%s/status/%s", userId, tweetId),
-			Context:  ctx,
+			Context:  &ctx,
 		}
-		newTweet.handleSingleTweet()
+		err := newTweet.handleSingleTweet()
+		if err != nil {
+			t.Log.Error(err)
+			continue
+		}
 	}
 	// Todo : After this, figure out how to search again if there is still search limit
 }

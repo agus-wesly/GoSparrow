@@ -14,7 +14,7 @@ import (
 type TweetSingleOption struct {
 	*Tweet
 	TweetUrl string
-	Context  context.Context
+	Context  *context.Context
 }
 
 func (t *TweetSingleOption) Prompt() {
@@ -38,15 +38,17 @@ func (t *TweetSingleOption) Prompt() {
 	}
 }
 
-func (t *TweetSingleOption) handleSingleTweet() {
-	err := chromedp.Run(t.Context,
+func (t *TweetSingleOption) handleSingleTweet() error {
+	err := chromedp.Run(*t.Context,
 		t.openTweetPage(t.TweetUrl),
 	)
 	if err != nil {
-		panic(err)
+        // todo : don't panic, but just skip
+        return err
 	}
 	t.Log.Success("Successfully Opened window")
-	t.scrollUntilBottom(t.Context)
+	t.scrollUntilBottom(*t.Context)
+    return nil
 }
 
 func (t *TweetSingleOption) DemoLogging() {
@@ -86,7 +88,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		panic(err)
 	}
 
-	t.Context = ctx
+	t.Context = &ctx
 
 	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
 		var tweetJson Response

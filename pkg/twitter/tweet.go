@@ -19,7 +19,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var DEBUG bool = true
+var DEBUG bool = false
 
 type Tweet struct {
 	AuthToken    string
@@ -156,6 +156,7 @@ func (t *Tweet) openTweetPage(url string) chromedp.Tasks {
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
+        // todo : we need timeout in case this stuck
 		chromedp.WaitReady(`body [data-testid="tweetButtonInline"]`),
 	}
 	return tasks
