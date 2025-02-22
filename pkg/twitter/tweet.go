@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"slices"
 	"strings"
 	"time"
 
@@ -20,31 +19,35 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var DEBUG bool = false
+var DEBUG bool = true
 
 type Tweet struct {
 	AuthToken    string
 	Limit        int
 	TweetResults map[string]TweetScrapResult
+
+	Log *terminal.Log
 }
 
 func (t *Tweet) init() {
 	t.Limit = 500
 	t.TweetResults = make(map[string]TweetScrapResult)
+	t.Log = &terminal.Log{}
+	t.Log.NewCursor()
 }
 
 func (t *Tweet) getTokenFromUser() {
 	if DEBUG {
 		t.AuthToken = "c9bca772a8e05e076c17da20f126d22e042dae6b"
 	} else {
-        inp := terminal.Input{
-            Message: "Enter your twitter auth token ",
-            Validator: terminal.Required,
-        }
-        err := inp.Ask(&t.AuthToken)
-        if err != nil {
-            panic(err)
-        }
+		inp := terminal.Input{
+			Message:   "Enter your twitter auth token ",
+			Validator: terminal.Required,
+		}
+		err := inp.Ask(&t.AuthToken)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -72,20 +75,20 @@ func (t *Tweet) Begin() {
 	mode := t.getModeFromUser()
 	if mode == SINGLE_MODE {
 		tweetSingle := TweetSingleOption{
-			Tweet: *t,
+			Tweet: t,
 		}
 		tweetSingle.Prompt()
-        tweetSingle.BeginSingleTweet()
+		tweetSingle.BeginSingleTweet()
 	} else if mode == SEARCH_MODE {
 		twitterSearch := TweetSearchOption{
-			Tweet:      *t,
+			Tweet:      t,
 			MinReplies: 0,
 			Query:      "",
 			MinLikes:   0,
 			Language:   "en",
 		}
 		twitterSearch.Prompt()
-        twitterSearch.BeginSearchTweet()
+		twitterSearch.BeginSearchTweet()
 	} else {
 		panic("Unknown option")
 	}
@@ -100,7 +103,7 @@ func (t *Tweet) SetupToken() {
 		t.VerifyAuthToken(),
 	)
 	if err != nil {
-		fmt.Println("Auth token is invalid", err)
+		t.Log.Error(err)
 		os.Exit(1)
 	}
 }
@@ -128,9 +131,9 @@ func (t *Tweet) AttachAuthToken() chromedp.Tasks {
 
 func (t *Tweet) VerifyAuthToken() chromedp.Tasks {
 	var location string
+	t.Log.Info("Verifying token...")
 	return chromedp.Tasks{
 		chromedp.Navigate("https://x.com/explore"),
-		chromedp.WaitReady(`body`),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			act := chromedp.Location(&location)
 			err := act.Do(ctx)
@@ -138,17 +141,18 @@ func (t *Tweet) VerifyAuthToken() chromedp.Tasks {
 				return err
 			}
 			if strings.Contains(location, "login") {
-				return errors.New("The auth token you provide is not valid")
+				return errors.New("Auth token is not valid")
 			}
+			t.Log.Success("Token Verified")
 			return nil
 		}),
 	}
 }
 
-func openTweetPage(url string) chromedp.Tasks {
-	fmt.Println("Opening window...")
+func (t *Tweet) openTweetPage(url string) chromedp.Tasks {
 	// Search for request that includes : TweetDetail
 	// const url string = "https://x.com/jherr/status/1758571101964382487"
+	t.Log.Info("Opening window...")
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
@@ -159,7 +163,6 @@ func openTweetPage(url string) chromedp.Tasks {
 
 func (t *Tweet) isReachingLimit() bool {
 	currLen := len(t.TweetResults)
-	fmt.Println("Current length : ", currLen, t.Limit)
 	return currLen >= t.Limit
 }
 
@@ -168,7 +171,7 @@ func (t *Tweet) scroll() chromedp.Tasks {
 		chromedp.Evaluate(`window.scrollTo({top: document.body.scrollHeight})`, nil),
 		chromedp.Evaluate(`document.evaluate("//span[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
 		chromedp.Evaluate(`document.evaluate("//button[contains(., 'Show replies')]", document, null, XPathResult.ANY_TYPE, null ).iterateNext()?.click()`, nil),
-        // todo : wait for another tweet to coming ??
+		// todo : wait for another tweet to coming ??
 		chromedp.Sleep(3 * time.Second),
 	}
 }
@@ -181,39 +184,11 @@ func (t *Tweet) scrollUntilBottom(ctx context.Context) {
 			break
 		}
 		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
-			fmt.Println("Scrolling down...")
+			t.Log.Info("Scrolling down...")
 			return nil
 		}))
 		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
-}
-
-type ExecFn func(requestId network.RequestID, ctx2 context.Context)
-
-func (t *Tweet) Listener(ctx context.Context, responseKey string, exec ExecFn) error {
-	tweetRequestIdList := make([]network.RequestID, 0)
-
-	chromedp.ListenTarget(ctx, func(ev interface{}) {
-		switch responseReceivedEvent := ev.(type) {
-		case *network.EventResponseReceived:
-			response := responseReceivedEvent.Response
-			if strings.Contains(response.URL, responseKey) {
-				tweetRequestIdList = append(tweetRequestIdList, responseReceivedEvent.RequestID)
-			}
-		case *network.EventLoadingFinished:
-			if !slices.Contains(tweetRequestIdList, responseReceivedEvent.RequestID) {
-				break
-			} else {
-				tweetRequestIdList = slices.DeleteFunc(tweetRequestIdList, func(targetId network.RequestID) bool {
-					return targetId == responseReceivedEvent.RequestID
-				})
-				fc := chromedp.FromContext(ctx)
-				ctx2 := cdp.WithExecutor(ctx, fc.Target)
-				exec(responseReceivedEvent.RequestID, ctx2)
-			}
-		}
-	})
-	return nil
 }
 
 func (t *Tweet) processTweetJSON(jsonData Response) error {
@@ -254,6 +229,7 @@ func (t *Tweet) addToTweetResult(item *ItemContent) TweetScrapResult {
 }
 
 func (t *Tweet) ExportToCSV() string {
+	t.Log.Info("Exporting to csv...")
 	res := make([][]string, len(t.TweetResults)+1)
 	res[0] = []string{"Tweet_Id", "Author", "Content"}
 
@@ -272,6 +248,7 @@ func (t *Tweet) ExportToCSV() string {
 	currentTime := time.Now().Local()
 	fileName := fmt.Sprintf("res-%d.csv", currentTime.Unix())
 	os.WriteFile(fileName, buf.Bytes(), 0644)
+	t.Log.Success("Successfully exported in ", fileName)
 	return fileName
 }
 

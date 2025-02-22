@@ -6,13 +6,13 @@ import (
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"fmt"
-	"log"
+	"time"
 
 	"github.com/chromedp/chromedp"
 )
 
 type TweetSingleOption struct {
-	Tweet
+	*Tweet
 	TweetUrl string
 	Context  context.Context
 }
@@ -40,39 +40,61 @@ func (t *TweetSingleOption) Prompt() {
 
 func (t *TweetSingleOption) handleSingleTweet() {
 	err := chromedp.Run(t.Context,
-		openTweetPage(t.TweetUrl),
+		t.openTweetPage(t.TweetUrl),
 	)
 	if err != nil {
-        panic(err)
+		panic(err)
 	}
+	t.Log.Success("Successfully Opened window")
 	t.scrollUntilBottom(t.Context)
 }
 
+func (t *TweetSingleOption) DemoLogging() {
+	t.Log.Info("Opening page..........................")
+	time.Sleep(2 * time.Second)
+	t.Log.Success("Sucessfully opened page")
+
+	for i := 0; i < 5; i++ {
+		t.Log.Info("Scrolling down.....................")
+		time.Sleep(1 * time.Second)
+		if i == 3 {
+			t.Log.Error("Something is wrong")
+			break
+		}
+		t.Log.Success(fmt.Sprintf("Got new replies. Current Replies : %d", (i+1)*10))
+	}
+}
+
 func (t *TweetSingleOption) BeginSingleTweet() {
+
+	// t.DemoLogging()
+    // if true {
+    //     return
+    // }
+
 	defer func() {
-		fmt.Println("Exporting to csv...")
-		fileName := t.ExportToCSV()
-		fmt.Println("Successfully exported at : ", fileName)
+		t.ExportToCSV()
 	}()
+
+	t.SetupToken()
 
 	ctx, acancel := core.CreateNewContext()
 	defer acancel()
+
+	err := chromedp.Run(ctx, t.AttachAuthToken())
+	if err != nil {
+		panic(err)
+	}
+
 	t.Context = ctx
 
-	err := chromedp.Run(t.Context,
-		t.AttachAuthToken(),
-	)
-	if err != nil {
-		log.Fatalln(err)
-	}
 	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
 		var tweetJson Response
-		err = json.Unmarshal(byts, &tweetJson)
+		err := json.Unmarshal(byts, &tweetJson)
 		if err == nil {
-			fmt.Println("Got new tweet data 😎! Saving now ....")
+			t.Log.Success("Got new tweet replies. Current replies get : ", len(t.TweetResults))
 			err = t.processTweetJSON(tweetJson)
 		}
-	},
-	)
+	}, nil)
 	t.handleSingleTweet()
 }

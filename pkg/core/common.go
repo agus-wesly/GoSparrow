@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/chromedp/cdproto/cdp"
@@ -35,7 +36,7 @@ func CreateNewContextWithTimeout(duration time.Duration) (context.Context, conte
 
 type ExecFn func(byts []byte)
 
-func ListenEvent(ctx context.Context, eventKey string, exec ExecFn) error {
+func ListenEvent(ctx context.Context, eventKey string, exec ExecFn, wg *sync.WaitGroup) error {
 	requestIdList := make([]network.RequestID, 0)
 
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
@@ -54,6 +55,9 @@ func ListenEvent(ctx context.Context, eventKey string, exec ExecFn) error {
 				})
 				fc := chromedp.FromContext(ctx)
 				ctx2 := cdp.WithExecutor(ctx, fc.Target)
+                if wg != nil {
+                    wg.Add(1)
+                }
 				go func() {
 					byts, err := network.GetResponseBody(responseReceivedEvent.RequestID).Do(ctx2)
 					if err != nil {
