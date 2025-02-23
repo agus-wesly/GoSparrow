@@ -41,5 +41,7 @@ main
 
 idk/
 res-*.csv
+*.csv
+*.json
 
 /docs/*
