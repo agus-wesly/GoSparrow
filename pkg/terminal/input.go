@@ -24,8 +24,8 @@ type InputTemplateData struct {
 }
 
 var InputQuestionTemplate = `
-    {{- color .Config.Icons.Question.Format }}{{ .Config.Icons.Question.Text }}  {{color "reset"}}
-    {{- color "default+hb"}}{{ .Message }} : {{color "reset"}}
+    {{- color .Config.Icons.Question.Format }}{{ .Config.Icons.Question.Text }} {{color "reset"}}
+    {{- color "default+hb"}}{{ .Message }}: {{color "reset"}}
 {{- if .ShowAnswer}}
   {{- color "cyan"}}{{.Answer}}{{color "reset"}}{{"\n"}}
 {{- end}}`
