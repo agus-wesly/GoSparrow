@@ -43,5 +43,6 @@ idk/
 res-*.csv
 *.csv
 *.json
+*.txt
 
 /docs/*
