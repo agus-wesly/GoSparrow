@@ -43,7 +43,6 @@ func (t *TweetSingleOption) handleSingleTweet() error {
 		t.openTweetPage(t.TweetUrl),
 	)
 	if err != nil {
-        // todo : don't panic, but just skip
         return err
 	}
 	t.Log.Success("Successfully Opened window")

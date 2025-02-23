@@ -63,7 +63,6 @@ func (t *TiktokSingleOption) handleSingleTiktok() {
 	for t.HasMore {
 		err := chromedp.Run(ctx,
 			chromedp.Navigate(t.updateUrl()),
-			// todo : this can fail, maybe we can make a timeout ?
 			chromedp.WaitVisible(`body pre`),
 			chromedp.Sleep(1*time.Second),
 		)
