@@ -12,7 +12,9 @@ import (
 var DEBUG = false
 
 type Tiktok struct {
-	Results   []TiktokScrapResult
+	Results []TiktokScrapResult
+	Log     *terminal.Log
+    Limit   int
 }
 
 var (
@@ -20,11 +22,13 @@ var (
 	SINGLE_MODE = "Single Tikotk Mode"
 )
 
-func (t *Tiktok) Setup()  {
-    t.Results = make([]TiktokScrapResult, 0)
+func (t *Tiktok) Setup() {
+	t.Results = make([]TiktokScrapResult, 0)
+	t.Log = &terminal.Log{}
+	t.Log.NewCursor()
 }
 
-func (t *Tiktok) Begin()  {
+func (t *Tiktok) Begin() {
 	var mode string
 	mode = SEARCH_MODE
 	if !DEBUG {
@@ -36,27 +40,27 @@ func (t *Tiktok) Begin()  {
 		opt.Ask(&res)
 		mode = opt.Opts[res]
 	}
-    t.Setup()
+	t.Setup()
 	if mode == SEARCH_MODE {
-        tiktokSearch := TiktokSearchOption{Tiktok: t}
-        tiktokSearch.Prompt()
-        tiktokSearch.BeginSearchTiktok()
+		tiktokSearch := TiktokSearchOption{Tiktok: t}
+		tiktokSearch.Prompt()
+		tiktokSearch.BeginSearchTiktok()
 	} else if mode == SINGLE_MODE {
-        tiktokSingle := TiktokSingleOption{
-            Tiktok: t,
-            HasMore: true,
-        }
-        tiktokSingle.Prompt()
-        tiktokSingle.BeginSingleTiktok()
+		tiktokSingle := TiktokSingleOption{
+			Tiktok:  t,
+			HasMore: true,
+		}
+		tiktokSingle.Prompt()
+		tiktokSingle.BeginSingleTiktok()
 	} else {
-        panic("Option provided is unknown")
+		panic("Option provided is unknown")
 	}
 }
 
-
 func (t *Tiktok) exportResultToCSV() (string, error) {
-	fmt.Println("Starting the export process...")
+	t.Log.Info("Starting the export process...")
 	res := make([][]string, len(t.Results)+1)
+    //TODO : Add another field to this
 	res[0] = []string{"Tiktok_ID", "Author", "Comment"}
 
 	var i int = 1
@@ -68,12 +72,17 @@ func (t *Tiktok) exportResultToCSV() (string, error) {
 	w := csv.NewWriter(buf)
 	w.WriteAll(res)
 	if err := w.Error(); err != nil {
-        return "", err
+		return "", err
 	}
 
 	currentTime := time.Now().Local()
 	fileName := fmt.Sprintf("res-tiktok%d.csv", currentTime.Unix())
 	os.WriteFile(fileName, buf.Bytes(), 0644)
-	fmt.Println("Successfully exported to : ", fileName)
+	t.Log.Success("Successfully exported to : ", fileName)
 	return fileName, nil
+}
+
+func (t *Tiktok) isReachingLimit() bool {
+	currLen := len(t.Results)
+	return currLen >= t.Limit
 }

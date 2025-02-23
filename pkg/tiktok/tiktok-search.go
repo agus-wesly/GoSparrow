@@ -3,6 +3,7 @@ package tiktok
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"fmt"
@@ -14,7 +15,7 @@ import (
 )
 
 type TiktokSearchOption struct {
-	Tiktok            *Tiktok
+	*Tiktok
 	Query             string
 	RelatedVideos     []string
 	videoListResponse VideoListResponse
@@ -38,24 +39,35 @@ func (t *TiktokSearchOption) Prompt() {
 		if err != nil {
 			panic(err)
 		}
+		inp = terminal.Input{
+			Message:   "How many tiktok replies do you want to get ? [Default : 500]",
+			Validator: terminal.IsNumber,
+			Default:   "500",
+		}
+		err = inp.Ask(&t.Limit)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 func (t *TiktokSearchOption) BeginSearchTiktok() {
 	defer t.Tiktok.exportResultToCSV()
-	t.searchRelevantVideo()
+	err := t.searchRelevantVideo()
+	if err != nil {
+		t.Log.Error(err)
+	}
 	t.processEachVideo()
 }
 
-func (t *TiktokSearchOption) searchRelevantVideo() {
+func (t *TiktokSearchOption) searchRelevantVideo() error {
 	// https://www.tiktok.com/search?q=penerapan%20var%20di%20indonesia
 	ctx, cancel := core.CreateNewContext()
 	defer cancel()
 	searchUrl := t.constructUrl()
 
 	core.ListenEvent(ctx, "api/search/general/full", func(byts []byte) {
-        err := json.Unmarshal(byts, &t.videoListResponse)
+		err := json.Unmarshal(byts, &t.videoListResponse)
 		if err == nil {
-			fmt.Println("Got tiktok video 😎! Saving now ....")
 			t.processVideoList()
 		}
 	}, nil)
@@ -67,19 +79,27 @@ func (t *TiktokSearchOption) searchRelevantVideo() {
 		chromedp.Sleep(2*time.Second),
 	)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Println(t.RelatedVideos)
+	if len(t.RelatedVideos) == 0 {
+		return errors.New("Cannot get any related video. Please change your search query")
+	}
+
+	t.Log.Success("Successfully get ", len(t.RelatedVideos), " of related videos")
+	return nil
 }
 
 func (t *TiktokSearchOption) processEachVideo() {
-	for _, videoUrl := range t.RelatedVideos[0:3] {
+	for _, videoUrl := range t.RelatedVideos {
 		tiktokVideo := TiktokSingleOption{
 			Tiktok:    t.Tiktok,
 			TiktokUrl: videoUrl,
 			HasMore:   true,
 		}
-		tiktokVideo.handleSingleTiktok()
+		err := tiktokVideo.handleSingleTiktok()
+		if err != nil {
+			continue
+		}
 	}
 }
 

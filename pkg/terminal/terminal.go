@@ -29,3 +29,10 @@ const (
 const ioctlReadTermios = 0x5401  // syscall.TCGETS
 const ioctlWriteTermios = 0x5402 // syscall.TCSETS
 
+
+type Short int16
+
+type Coord struct {
+	X Short
+	Y Short
+}

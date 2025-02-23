@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
-	"fmt"
 	"net/url"
 	"strconv"
 	"strings"
@@ -33,7 +32,19 @@ func (t *TiktokSingleOption) Prompt() {
 			Message:   "Enter your desired tiktok url",
 			Validator: terminal.Required,
 		}
-		opt.Ask(&t.TiktokUrl)
+		err := opt.Ask(&t.TiktokUrl)
+		if err != nil {
+			panic(err)
+		}
+		opt = terminal.Input{
+			Message:   "How many tiktok replies do you want to get ? [Default : 500]",
+			Validator: terminal.IsNumber,
+			Default:   "500",
+		}
+		err = opt.Ask(&t.Limit)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
@@ -47,30 +58,36 @@ func (t *TiktokSingleOption) BeginSingleTiktok() {
 	t.handleSingleTiktok()
 }
 
-func (t *TiktokSingleOption) handleSingleTiktok() {
+func (t *TiktokSingleOption) handleSingleTiktok() error {
 	err := t.getFirstCommentUrl()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	ctx, acancel := core.CreateNewContextWithTimeout(2 * time.Minute)
 	defer acancel()
 
+    t.Log.Success("starting to peak...")
+
 	t.listenForReplies(ctx)
-	chromedp.Run(
+	err = chromedp.Run(
 		ctx,
 		network.Enable(),
 	)
-	for t.HasMore {
-		err := chromedp.Run(ctx,
+	if err != nil {
+		return err
+	}
+	for t.HasMore && !t.isReachingLimit() {
+		err = chromedp.Run(ctx,
 			chromedp.Navigate(t.updateUrl()),
 			chromedp.WaitVisible(`body pre`),
 			chromedp.Sleep(1*time.Second),
 		)
 		if err != nil {
-            fmt.Println("Error : ", err)
-			break
+			t.Log.Error("Something gone wrong. ", err)
+			return err
 		}
 	}
+	return nil
 }
 
 func (t *TiktokSingleOption) listenForReplies(ctx context.Context) {
@@ -85,7 +102,7 @@ func (t *TiktokSingleOption) listenForReplies(ctx context.Context) {
 				err := json.Unmarshal(byts, &replies)
 				if err == nil {
 					t.processReplies(replies)
-					fmt.Println("Successfully retrieved one chunk of comment...")
+					t.Log.Success("Successfully retrieved one chunk of comment. Current comment : ", len(t.Results))
 					t.HasMore = len(replies.Comments) > 0
 					t.Cursor = replies.Cursor
 				}
@@ -105,7 +122,7 @@ func (t *TiktokSingleOption) getFirstCommentUrl() error {
 		case *network.EventResponseReceived:
 			response := responseReceivedEvent.Response
 			if strings.Contains(response.URL, "comment") {
-				fmt.Println("Retrieved base comment, peeking all comments...")
+				t.Log.Success("Retrieved base comment, peeking all comments...")
 				respUrl := t.preprocessURL(response.URL)
 				firstPageUrl, errorParsed := url.Parse(respUrl)
 				if errorParsed != nil {
@@ -117,6 +134,7 @@ func (t *TiktokSingleOption) getFirstCommentUrl() error {
 			}
 		}
 	})
+	t.Log.Info("Opening window...")
 	err = chromedp.Run(ctx,
 		network.Enable(),
 		network.SetBlockedURLS([]string{"https://v*-webapp-prime.tiktok.com/video"}),

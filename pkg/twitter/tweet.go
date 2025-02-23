@@ -232,6 +232,7 @@ func (t *Tweet) addToTweetResult(item *ItemContent) TweetScrapResult {
 func (t *Tweet) ExportToCSV() string {
 	t.Log.Info("Exporting to csv...")
 	res := make([][]string, len(t.TweetResults)+1)
+    //TODO : Add another field to this
 	res[0] = []string{"Tweet_Id", "Author", "Content"}
 
 	var i int = 1
