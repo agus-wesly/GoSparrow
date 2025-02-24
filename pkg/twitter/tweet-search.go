@@ -114,8 +114,7 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 	cancel()
 
 	wg.Wait()
-	// create a new context ?
-	ctx, cancel = core.CreateNewContextWithTimeout(2 * time.Minute)
+	ctx, cancel = core.CreateNewContextWithTimeout(5 * time.Minute)
 	defer cancel()
 	chromedp.Run(ctx, t.AttachAuthToken())
 	// Listen for incoming tweet

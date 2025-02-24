@@ -15,10 +15,6 @@ var foo []string
 
 var DEBUG bool = false
 
-var Test struct {
-	Foo string
-}
-
 func main() {
 	prompt := terminal.Select{
 		Opts:    []string{TWITTER, TIKTOK},
