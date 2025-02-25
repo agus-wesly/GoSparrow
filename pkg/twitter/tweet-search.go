@@ -148,5 +148,6 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 			}
 		}
 	}
+	t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
 	// Todo : After this, figure out how to search again if there is still search limit
 }

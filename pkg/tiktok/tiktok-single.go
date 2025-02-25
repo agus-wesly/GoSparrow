@@ -60,6 +60,7 @@ func (t *TiktokSingleOption) BeginSingleTiktok() {
 		}
 	}()
 	t.handleSingleTiktok()
+	t.Log.Success("Finish scrapping. Total comments received : ", len(t.Results))
 }
 
 func (t *TiktokSingleOption) handleSingleTiktok() error {

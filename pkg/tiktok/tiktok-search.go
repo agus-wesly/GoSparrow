@@ -105,6 +105,7 @@ func (t *TiktokSearchOption) processEachVideo() {
 			}
 		}
 	}
+	t.Log.Success("Finish scrapping. Total comments received : ", len(t.Results))
 }
 
 func (t *TiktokSearchOption) constructUrl() string {

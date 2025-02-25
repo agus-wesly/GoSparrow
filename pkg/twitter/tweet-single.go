@@ -50,9 +50,9 @@ func (t *TweetSingleOption) handleSingleTweet() error {
 	}
 	t.Log.Success("Successfully Opened window")
 	err = t.scrollUntilBottom(*t.Context)
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -85,7 +85,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 
 	t.SetupToken()
 
-    // TODO : use timeout context, idk maybe 3 minutes is enough ?
+	// TODO : use timeout context, idk maybe 3 minutes is enough ?
 	ctx, acancel := core.CreateNewContext()
 	defer acancel()
 
@@ -105,6 +105,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		}
 	}, nil)
 	t.handleSingleTweet()
+	t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
 }
 
 func (t *TweetSingleOption) scrollUntilBottom(ctx context.Context) error {
