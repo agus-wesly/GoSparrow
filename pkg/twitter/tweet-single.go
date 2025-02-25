@@ -3,6 +3,7 @@ package twitter
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"fmt"
@@ -10,6 +11,8 @@ import (
 
 	"github.com/chromedp/chromedp"
 )
+
+var REACHING_LIMIT_ERR = errors.New("Reaching limit")
 
 type TweetSingleOption struct {
 	*Tweet
@@ -43,11 +46,14 @@ func (t *TweetSingleOption) handleSingleTweet() error {
 		t.openTweetPage(t.TweetUrl),
 	)
 	if err != nil {
-        return err
+		return err
 	}
 	t.Log.Success("Successfully Opened window")
-	t.scrollUntilBottom(*t.Context)
-    return nil
+	err = t.scrollUntilBottom(*t.Context)
+    if err != nil {
+        return err
+    }
+	return nil
 }
 
 func (t *TweetSingleOption) DemoLogging() {
@@ -69,9 +75,9 @@ func (t *TweetSingleOption) DemoLogging() {
 func (t *TweetSingleOption) BeginSingleTweet() {
 
 	// t.DemoLogging()
-    // if true {
-    //     return
-    // }
+	// if true {
+	//     return
+	// }
 
 	defer func() {
 		t.ExportToCSV()
@@ -79,6 +85,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 
 	t.SetupToken()
 
+    // TODO : use timeout context, idk maybe 3 minutes is enough ?
 	ctx, acancel := core.CreateNewContext()
 	defer acancel()
 
@@ -98,4 +105,23 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		}
 	}, nil)
 	t.handleSingleTweet()
+}
+
+func (t *TweetSingleOption) scrollUntilBottom(ctx context.Context) error {
+	var isAlreadyOnTheBottom bool = false
+	for !isAlreadyOnTheBottom {
+		if t.isReachingLimit() {
+			return REACHING_LIMIT_ERR
+		}
+		err := chromedp.Run(ctx, t.scroll())
+		if err != nil {
+			break
+		}
+		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
+			t.Log.Info("Scrolling down...")
+			return nil
+		}))
+		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
+	}
+	return nil
 }

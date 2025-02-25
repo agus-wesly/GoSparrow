@@ -156,7 +156,8 @@ func (t *Tweet) openTweetPage(url string) chromedp.Tasks {
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
-        // todo : we need timeout in case this stuck
+		// todo : we need timeout in case this stuck
+        // because the user probably not entering valid twitter url
 		chromedp.WaitReady(`body [data-testid="tweetButtonInline"]`),
 	}
 	return tasks
@@ -177,20 +178,6 @@ func (t *Tweet) scroll() chromedp.Tasks {
 	}
 }
 
-func (t *Tweet) scrollUntilBottom(ctx context.Context) {
-	var isAlreadyOnTheBottom bool = false
-	for !isAlreadyOnTheBottom && !t.isReachingLimit() {
-		err := chromedp.Run(ctx, t.scroll())
-		if err != nil {
-			break
-		}
-		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
-			t.Log.Info("Scrolling down...")
-			return nil
-		}))
-		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
-	}
-}
 
 func (t *Tweet) processTweetJSON(jsonData Response) error {
 	var entries []Entry
@@ -232,7 +219,7 @@ func (t *Tweet) addToTweetResult(item *ItemContent) TweetScrapResult {
 func (t *Tweet) ExportToCSV() string {
 	t.Log.Info("Exporting to csv...")
 	res := make([][]string, len(t.TweetResults)+1)
-    //TODO : Add another field to this
+	//TODO : Add another field to this
 	res[0] = []string{"Tweet_Id", "Author", "Content"}
 
 	var i int = 1
