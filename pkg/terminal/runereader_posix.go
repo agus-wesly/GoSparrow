@@ -1,3 +1,6 @@
+//go:build !windows
+// +build !windows
+
 package terminal
 
 import (
@@ -14,39 +17,10 @@ type BufferedReader struct {
 	Buffer *bytes.Buffer
 }
 
-type FileWriter interface {
-	io.Writer
-	Fd() uintptr
-}
-
-// FileReader provides a minimal interface for Stdout.
-type FileReader interface {
-	io.Reader
-	Fd() uintptr
-}
-
-type Stdio struct {
-	In  FileReader
-	Out FileWriter
-	Err io.Writer
-}
-
-type RuneReader struct {
-	stdio Stdio
-	state runeReaderState
-}
-
 type runeReaderState struct {
 	term   syscall.Termios
 	reader *bufio.Reader
 	buf    *bytes.Buffer
-}
-
-func NewRuneReader(stdio Stdio) *RuneReader {
-	return &RuneReader{
-		stdio: stdio,
-		state: newRuneReaderState(stdio.In),
-	}
 }
 
 func newRuneReaderState(input FileReader) runeReaderState {
@@ -151,7 +125,6 @@ func (rr *RuneReader) SetTermMode() error {
 
 	return nil
 }
-
 
 func (rr *RuneReader) RestoreTermMode() error {
 	if _, _, err := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(rr.stdio.In.Fd()), ioctlWriteTermios, uintptr(unsafe.Pointer(&rr.state.term)), 0, 0, 0); err != 0 {

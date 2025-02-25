@@ -5,6 +5,11 @@ import (
 	"golang.org/x/text/width"
 )
 
+type RuneReader struct {
+	stdio Stdio
+	state runeReaderState
+}
+
 func StringWidth(str string) int {
 	w := 0
 	ansi := false
@@ -38,4 +43,11 @@ func runeWidth(r rune) int {
 		return 0
 	}
 	return 1
+}
+
+func NewRuneReader(stdio Stdio) *RuneReader {
+	return &RuneReader{
+		stdio: stdio,
+		state: newRuneReaderState(stdio.In),
+	}
 }

@@ -36,8 +36,8 @@ func (c *Cursor) HorizontalAbsolute(x int) error {
 }
 
 func (c *Cursor) Up(n int) error {
-    _, err := fmt.Fprintf(c.Out, "\x1b[%dA", n)
-    return err
+	_, err := fmt.Fprintf(c.Out, "\x1b[%dA", n)
+	return err
 }
 
 func (c *Cursor) PreviousLine(n int) error {
@@ -46,4 +46,3 @@ func (c *Cursor) PreviousLine(n int) error {
 	}
 	return c.HorizontalAbsolute(0)
 }
-

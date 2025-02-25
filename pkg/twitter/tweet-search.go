@@ -138,6 +138,7 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 			TweetUrl: fmt.Sprintf("https://x.com/%s/status/%s", userId, tweetId),
 			Context:  &ctx,
 		}
+        // todo : set limit
 		err := newTweet.handleSingleTweet()
 		if err != nil {
 			t.Log.Error(err)
