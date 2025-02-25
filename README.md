@@ -6,12 +6,12 @@ It uses `cdp` (https://github.com/chromedp/chromedp) to run the browser
 
 *PLEASE NOTE THAT THIS TOOL IS JUST FOR EDUCATIONAL PURPOSE ONLY*
 
-GoSparrow has 2 mode : *Single Mode* and *Search Mode*
-Currently its support : Twitter and Tiktok
-*More social media support will comming soon! :D*
+GoSparrow has 2 mode : *Single Mode* and *Search Mode*<br>
+Currently its support : Twitter and Tiktok<br>
+*More social media support will comming soon! :D*<br>
 
 ### Prerequisite
-In order to run this tools, you need to have : 
+In order to run this tool, you need to have : 
 - Golang Installed. I'm using `go1.23.5 linux/amd64`
 - Chrome installed
 
