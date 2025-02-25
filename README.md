@@ -4,7 +4,7 @@
 GoSparrow is an unofficial tool to scrape data from various social media. 
 It uses `cdp` (https://github.com/chromedp/chromedp) to run the browser
 
-*PLEASE NOTE THAT THIS TOOLS IS JUST FOR EDUCATIONAL PURPOSE ONLY*
+*PLEASE NOTE THAT THIS TOOL IS JUST FOR EDUCATIONAL PURPOSE ONLY*
 
 GoSparrow has 2 mode : *Single Mode* and *Search Mode*
 Currently its support : Twitter and Tiktok
