@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"example/hello/pkg/core"
-	"example/hello/pkg/env"
-	"example/hello/pkg/terminal"
+	"github.com/agus-wesly/GoSparrow/pkg/core"
+	"github.com/agus-wesly/GoSparrow/pkg/env"
+	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"

@@ -3,7 +3,7 @@ package tiktok
 import (
 	"bytes"
 	"encoding/csv"
-	"example/hello/pkg/terminal"
+	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 	"fmt"
 	"os"
 	"time"

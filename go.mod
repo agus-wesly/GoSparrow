@@ -1,4 +1,4 @@
-module example/hello
+module github.com/agus-wesly/GoSparrow
 
 go 1.23.5
 

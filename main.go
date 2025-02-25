@@ -1,10 +1,10 @@
 package main
 
 import (
-	"example/hello/pkg/core"
-	"example/hello/pkg/terminal"
-	"example/hello/pkg/tiktok"
-	"example/hello/pkg/twitter"
+	"github.com/agus-wesly/GoSparrow/pkg/core"
+	"github.com/agus-wesly/GoSparrow/pkg/terminal"
+	"github.com/agus-wesly/GoSparrow/pkg/tiktok"
+	"github.com/agus-wesly/GoSparrow/pkg/twitter"
 	"flag"
 	"fmt"
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"example/hello/pkg/core"
-	"example/hello/pkg/terminal"
+	"github.com/agus-wesly/GoSparrow/pkg/core"
+	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 	"fmt"
 	"time"
 
