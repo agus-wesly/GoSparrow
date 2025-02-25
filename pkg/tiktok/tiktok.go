@@ -76,7 +76,7 @@ func (t *Tiktok) exportResultToCSV() (string, error) {
 	}
 
 	currentTime := time.Now().Local()
-	fileName := fmt.Sprintf("res-tiktok%d.csv", currentTime.Unix())
+	fileName := fmt.Sprintf("res-tiktok-%d.csv", currentTime.Unix())
 	os.WriteFile(fileName, buf.Bytes(), 0644)
 	t.Log.Success("Successfully exported to : ", fileName)
 	return fileName, nil
