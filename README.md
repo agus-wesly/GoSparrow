@@ -1,14 +1,16 @@
 ## Go Sparrow
 ![image](https://github.com/user-attachments/assets/87b59785-3357-42f9-be37-72852f20e3f3)
 
-GoSparrow is an unofficial tool to scrape data from various social media. 
-It uses `cdp` (https://github.com/chromedp/chromedp) to run the browser
+GoSparrow is an unofficial tool to scrape data from various social media.<br>
+It uses `cdp` (https://github.com/chromedp/chromedp) to run the browser.<br>
+Its free and open source :D<br> 
 
-*PLEASE NOTE THAT THIS TOOL IS JUST FOR EDUCATIONAL PURPOSE ONLY*
+
+*PLEASE NOTE THAT THIS TOOL IS JUST FOR EDUCATIONAL AND RESEARCH PURPOSE ONLY*
 
 GoSparrow has 2 mode : *Single Mode* and *Search Mode*<br>
 Currently its support : Twitter and Tiktok<br>
-*More social media support will comming soon! :D*<br>
+*More social media support will comming soon!*<br>
 
 ### Prerequisite
 In order to run this tool, you need to have : 
