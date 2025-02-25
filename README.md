@@ -12,14 +12,14 @@ Currently its support : Twitter and Tiktok
 
 ### Prerequisite
 In order to run this tools, you need to have : 
-> Golang Installed. I'm using `go1.23.5 linux/amd64`
-> Chrome installed
+- Golang Installed. I'm using `go1.23.5 linux/amd64`
+- Chrome installed
 
 ### Running
 ```
 git clone git@github.com:agus-wesly/GoSparrow.git
 ```
-or maybe just download the zip file
+or maybe just download the zip file (https://github.com/agus-wesly/GoSparrow/archive/refs/heads/main.zip)
 
 ```
 go build .
