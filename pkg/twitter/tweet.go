@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"example/hello/pkg/core"
+	"example/hello/pkg/env"
 	"example/hello/pkg/terminal"
 
 	"github.com/chromedp/cdproto/cdp"
@@ -19,7 +20,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var DEBUG bool = false
+var DEBUG bool = true
 
 type Tweet struct {
 	AuthToken    string
@@ -38,7 +39,11 @@ func (t *Tweet) init() {
 
 func (t *Tweet) getTokenFromUser() {
 	if DEBUG {
-		t.AuthToken = "c9bca772a8e05e076c17da20f126d22e042dae6b"
+		token, err := env.Get("TWEET_AUTH_TOKEN")
+		if err != nil {
+			panic(err)
+		}
+		t.AuthToken = token
 	} else {
 		inp := terminal.Input{
 			Message:   "Enter your twitter auth token ",
@@ -141,7 +146,7 @@ func (t *Tweet) VerifyAuthToken() chromedp.Tasks {
 				return err
 			}
 			if strings.Contains(location, "login") {
-				return errors.New("Auth token is not valid")
+				return errors.New("Auth token is not valid. Please provide valid auth token")
 			}
 			t.Log.Success("Token Verified")
 			return nil
@@ -157,7 +162,7 @@ func (t *Tweet) openTweetPage(url string) chromedp.Tasks {
 		network.Enable(),
 		chromedp.Navigate(url),
 		// todo : we need timeout in case this stuck
-        // because the user probably not entering valid twitter url
+		// because the user probably not entering valid twitter url
 		chromedp.WaitReady(`body [data-testid="tweetButtonInline"]`),
 	}
 	return tasks
@@ -177,7 +182,6 @@ func (t *Tweet) scroll() chromedp.Tasks {
 		chromedp.Sleep(3 * time.Second),
 	}
 }
-
 
 func (t *Tweet) processTweetJSON(jsonData Response) error {
 	var entries []Entry
