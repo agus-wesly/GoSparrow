@@ -20,7 +20,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var DEBUG bool = true
+var DEBUG bool = false
 
 type Tweet struct {
 	AuthToken    string

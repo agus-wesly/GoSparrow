@@ -61,6 +61,7 @@ func (t *TiktokSearchOption) BeginSearchTiktok() {
 
 func (t *TiktokSearchOption) searchRelevantVideo() error {
 	// https://www.tiktok.com/search?q=penerapan%20var%20di%20indonesia
+	t.Log.Info("Searching relevant video...")
 	ctx, cancel := core.CreateNewContext()
 	defer cancel()
 	searchUrl := t.constructUrl()

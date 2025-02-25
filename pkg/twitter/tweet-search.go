@@ -2,6 +2,7 @@ package twitter
 
 import (
 	"encoding/json"
+	"errors"
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"fmt"
@@ -19,6 +20,8 @@ type TweetSearchOption struct {
 	MinReplies int
 	MinLikes   int
 	Language   string
+
+	entryList []Entry
 }
 
 func (t *TweetSearchOption) Prompt() {
@@ -67,66 +70,31 @@ func (t *TweetSearchOption) constructSearchUrl() string {
 }
 
 func (t *TweetSearchOption) BeginSearchTweet() {
+	t.entryList = make([]Entry, 0)
 	t.SetupToken()
+    err := t.startSearching()
+    if err != nil {
+        t.Log.Error(err.Error())
+        return
+    }
+	t.startScraping()
+}
 
-	ctx, cancel := core.CreateNewContext()
-
-	err := chromedp.Run(ctx, t.AttachAuthToken())
-	if err != nil {
-		panic(err)
-	}
-
-	searchUrl := t.constructSearchUrl()
-	var entry_list = make([]Entry, 0)
-	defer func() {
-		t.ExportToCSV()
-	}()
-
-	// listening in search phase
-	var wg sync.WaitGroup
-	core.ListenEvent(ctx, "SearchTimeline", func(byts []byte) {
-		go func() error {
-			var searchResponse SearchResponse
-			err := json.Unmarshal(byts, &searchResponse)
-			if err == nil {
-				entries := searchResponse.Data.SearchByRawQuery.SearchTimeline.Timeline.Instructions[0].Entries
-				for _, entry := range entries {
-					if entry.Content.EntryType == "TimelineTimelineItem" {
-						entry_list = append(entry_list, entry)
-					}
-				}
-				t.Log.Success("Done searching, found ", len(entries), " related tweet")
-				wg.Done()
-				return nil
-			}
-			return nil
-		}()
-	}, &wg)
-	t.Log.Info("Searching for tweets...")
-	err = chromedp.Run(ctx,
-		network.Enable(),
-		chromedp.Navigate(searchUrl),
-		chromedp.WaitReady(`body [aria-label='Timeline: Search timeline']`),
-	)
-	if err != nil {
-		panic(err)
-	}
-	cancel()
-
-	wg.Wait()
-	ctx, cancel = core.CreateNewContextWithTimeout(5 * time.Minute)
+func (t *TweetSearchOption) startScraping() {
+	defer t.ExportToCSV()
+	ctx, cancel := core.CreateNewContextWithTimeout(5 * time.Minute)
 	defer cancel()
 	chromedp.Run(ctx, t.AttachAuthToken())
 	// Listen for incoming tweet
 	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
 		var tweetJson Response
-		err = json.Unmarshal(byts, &tweetJson)
+		err := json.Unmarshal(byts, &tweetJson)
 		if err == nil {
 			t.Log.Success("Got new replies 😎! Current Replies : ", len(t.TweetResults))
 			err = t.processTweetJSON(tweetJson)
 		}
 	}, nil)
-	for _, entry := range entry_list {
+	for _, entry := range t.entryList {
 		item := entry.Content.ItemContent
 		t.addToTweetResult(item)
 
@@ -150,4 +118,49 @@ func (t *TweetSearchOption) BeginSearchTweet() {
 	}
 	t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
 	// Todo : After this, figure out how to search again if there is still search limit
+}
+
+func (t *TweetSearchOption) startSearching() error {
+	ctx, cancel := core.CreateNewContext()
+	err := chromedp.Run(ctx, t.AttachAuthToken())
+	if err != nil {
+		panic(err)
+	}
+	searchUrl := t.constructSearchUrl()
+	// listening in search phase
+	var wg sync.WaitGroup
+	core.ListenEvent(ctx, "SearchTimeline", func(byts []byte) {
+		go func() error {
+			var searchResponse SearchResponse
+			err := json.Unmarshal(byts, &searchResponse)
+			if err == nil {
+				entries := searchResponse.Data.SearchByRawQuery.SearchTimeline.Timeline.Instructions[0].Entries
+				for _, entry := range entries {
+					if entry.Content.EntryType == "TimelineTimelineItem" {
+						t.entryList = append(t.entryList, entry)
+					}
+				}
+				wg.Done()
+				return nil
+			}
+			return nil
+		}()
+	}, &wg)
+	t.Log.Info("Searching for tweets...")
+	err = chromedp.Run(ctx,
+		network.Enable(),
+		chromedp.Navigate(searchUrl),
+		chromedp.WaitVisible(`body [aria-label='Timeline: Search timeline'],body [data-testid='empty_state_header_text']`),
+	)
+	if err != nil {
+		panic(err)
+	}
+	cancel()
+	wg.Wait()
+	if len(t.entryList) == 0 {
+		return errors.New("No related tweet found. You may want to change your search query")
+	} else {
+		t.Log.Success("Done searching, found ", len(t.entryList), " related tweet")
+	}
+    return nil
 }
