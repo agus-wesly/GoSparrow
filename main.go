@@ -1,9 +1,11 @@
 package main
 
 import (
+	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"example/hello/pkg/tiktok"
 	"example/hello/pkg/twitter"
+	"flag"
 	"fmt"
 
 	"github.com/mgutz/ansi"
@@ -18,7 +20,12 @@ var foo []string
 
 var DEBUG bool = false
 
+
 func main() {
+    headless := flag.Bool("headless", false, "Specify if app run in the headless mode")
+    flag.Parse()
+    core.IS_HEADLESS = *headless
+
     promptHeader()
 	prompt := terminal.Select{
 		Opts:    []string{TWITTER, TIKTOK},
