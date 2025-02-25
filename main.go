@@ -55,6 +55,7 @@ func promptHeader() {
 	fmt.Println(` / /_/ / / /_/ /   ____/ /__  /_/ / /_/ /_  /   _  /   / /_/ /_ |/ |/ / `)
 	fmt.Println(` \____/  \____/    /____/ _  .___/\__,_/ /_/    /_/    \____/____/|__/  `)
 	fmt.Println(`                            /_/                                           `)
-	fmt.Println(`                                            Created with 🤍 by : Wesly  `)
+	fmt.Println(`                                            Scrap any social media  `)
+    fmt.Println(`                                            Created with 🤍 by : Wesly:)  `)
 	fmt.Println(ansi.Reset)
 }
