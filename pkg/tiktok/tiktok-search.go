@@ -98,7 +98,11 @@ func (t *TiktokSearchOption) processEachVideo() {
 		}
 		err := tiktokVideo.handleSingleTiktok()
 		if err != nil {
-			continue
+			if err == REACHING_LIMIT_ERR {
+				break
+			} else {
+				continue
+			}
 		}
 	}
 }

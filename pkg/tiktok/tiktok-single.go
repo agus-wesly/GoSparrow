@@ -3,6 +3,7 @@ package tiktok
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"example/hello/pkg/core"
 	"example/hello/pkg/terminal"
 	"net/url"
@@ -24,6 +25,8 @@ type TiktokSingleOption struct {
 	FirstCommentUrl *url.URL
 	TiktokId        string
 }
+
+var REACHING_LIMIT_ERR = errors.New("Reaching limit")
 
 func (t *TiktokSingleOption) Prompt() {
 	t.TiktokUrl = "https://www.tiktok.com/@andwey.kurt1/video/7467314067489721608"
@@ -49,6 +52,7 @@ func (t *TiktokSingleOption) Prompt() {
 }
 
 func (t *TiktokSingleOption) BeginSingleTiktok() {
+	// TODO: hide the cursor
 	defer func() {
 		_, err := t.exportResultToCSV()
 		if err != nil {
@@ -66,7 +70,7 @@ func (t *TiktokSingleOption) handleSingleTiktok() error {
 	ctx, acancel := core.CreateNewContextWithTimeout(2 * time.Minute)
 	defer acancel()
 
-    t.Log.Success("starting to peak...")
+	t.Log.Success("starting to peak...")
 
 	t.listenForReplies(ctx)
 	err = chromedp.Run(
@@ -76,7 +80,10 @@ func (t *TiktokSingleOption) handleSingleTiktok() error {
 	if err != nil {
 		return err
 	}
-	for t.HasMore && !t.isReachingLimit() {
+	for t.HasMore {
+		if t.isReachingLimit() {
+			return REACHING_LIMIT_ERR
+		}
 		err = chromedp.Run(ctx,
 			chromedp.Navigate(t.updateUrl()),
 			chromedp.WaitVisible(`body pre`),
