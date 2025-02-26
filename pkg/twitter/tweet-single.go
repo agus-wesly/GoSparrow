@@ -6,8 +6,6 @@ import (
 	"errors"
 	"github.com/agus-wesly/GoSparrow/pkg/core"
 	"github.com/agus-wesly/GoSparrow/pkg/terminal"
-	"fmt"
-	"time"
 
 	"github.com/chromedp/chromedp"
 )
@@ -56,32 +54,13 @@ func (t *TweetSingleOption) handleSingleTweet() error {
 	return nil
 }
 
-func (t *TweetSingleOption) DemoLogging() {
-	t.Log.Info("Opening page..........................")
-	time.Sleep(2 * time.Second)
-	t.Log.Success("Sucessfully opened page")
-
-	for i := 0; i < 5; i++ {
-		t.Log.Info("Scrolling down.....................")
-		time.Sleep(1 * time.Second)
-		if i == 3 {
-			t.Log.Error("Something is wrong")
-			break
-		}
-		t.Log.Success(fmt.Sprintf("Got new replies. Current Replies : %d", (i+1)*10))
-	}
-}
-
 func (t *TweetSingleOption) BeginSingleTweet() {
-
-	// t.DemoLogging()
-	// if true {
-	//     return
-	// }
 
 	defer func() {
 		t.ExportToCSV()
 	}()
+
+	// TODO : Validate the twitter url
 
 	t.SetupToken()
 
