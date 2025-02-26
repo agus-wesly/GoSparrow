@@ -29,6 +29,7 @@ type TiktokSingleOption struct {
 }
 
 var REACHING_LIMIT_ERR = errors.New("Reaching limit")
+var INVALID_URL_ERR = errors.New("Invalid url. Please provide valid tiktok url")
 
 func (t *TiktokSingleOption) Prompt() {
 	t.TiktokUrl = "https://www.tiktok.com/@andwey.kurt1/video/7467314067489721608"
@@ -61,7 +62,7 @@ func (t *TiktokSingleOption) BeginSingleTiktok() {
 		}
 	}()
 	err := t.handleSingleTiktok()
-	if err != nil {
+	if err != nil && err != REACHING_LIMIT_ERR {
 		t.Log.Error(err.Error())
 		os.Exit(1)
 	}
@@ -70,7 +71,7 @@ func (t *TiktokSingleOption) BeginSingleTiktok() {
 
 func (t *TiktokSingleOption) handleSingleTiktok() error {
 	if !t.ValidateTiktokUrl() {
-		return errors.New("Invalid url. Please provide valid tiktok url")
+		return INVALID_URL_ERR
 	}
 	err := t.getFirstCommentUrl()
 	if err != nil {
@@ -80,7 +81,6 @@ func (t *TiktokSingleOption) handleSingleTiktok() error {
 	defer acancel()
 
 	t.Log.Success("starting to peak...")
-
 	t.listenForReplies(ctx)
 	err = chromedp.Run(
 		ctx,
@@ -100,7 +100,7 @@ func (t *TiktokSingleOption) handleSingleTiktok() error {
 		)
 		if err != nil {
 			t.Log.Error("Something gone wrong. ", err)
-			return err
+			return REACHING_LIMIT_ERR
 		}
 	}
 	return nil

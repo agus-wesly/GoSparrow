@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/agus-wesly/GoSparrow/pkg/core"
 	"github.com/agus-wesly/GoSparrow/pkg/terminal"
-	"fmt"
 	"net/url"
 	"time"
 
@@ -102,6 +102,7 @@ func (t *TiktokSearchOption) processEachVideo() {
 			if err == REACHING_LIMIT_ERR {
 				break
 			} else {
+                t.Log.Error(err.Error())
 				continue
 			}
 		}
