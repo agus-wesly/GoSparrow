@@ -70,7 +70,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 	}
 
 	t.SetupToken()
-	ctx, acancel := core.CreateNewContextWithTimeout(3 * time.Minute)
+	ctx, acancel := core.CreateNewContextWithTimeout(5 * time.Minute)
 	defer acancel()
 	err := chromedp.Run(ctx, t.AttachAuthToken())
 	if err != nil {
@@ -87,9 +87,9 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		}
 	}, nil)
 	err = t.handleSingleTweet()
-	if err != nil {
+	if err != nil && err != REACHING_LIMIT_ERR {
 		t.Log.Error(err.Error())
-		os.Exit(1)
+        os.Exit(1)
 	} else {
 		t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
 	}
@@ -103,7 +103,8 @@ func (t *TweetSingleOption) scrollUntilBottom(ctx context.Context) error {
 		}
 		err := chromedp.Run(ctx, t.scroll())
 		if err != nil {
-			break
+            t.Log.Error("Something went wrong", err.Error())
+            return REACHING_LIMIT_ERR
 		}
 		chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
 			t.Log.Info("Scrolling down...")
