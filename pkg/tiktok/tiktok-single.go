@@ -4,12 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/agus-wesly/GoSparrow/pkg/core"
-	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/agus-wesly/GoSparrow/pkg/core"
+	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
@@ -52,18 +54,24 @@ func (t *TiktokSingleOption) Prompt() {
 }
 
 func (t *TiktokSingleOption) BeginSingleTiktok() {
-	// TODO: hide the cursor
 	defer func() {
 		_, err := t.exportResultToCSV()
 		if err != nil {
 			panic(err)
 		}
 	}()
-	t.handleSingleTiktok()
+	err := t.handleSingleTiktok()
+	if err != nil {
+		t.Log.Error(err.Error())
+		os.Exit(1)
+	}
 	t.Log.Success("Finish scrapping. Total comments received : ", len(t.Results))
 }
 
 func (t *TiktokSingleOption) handleSingleTiktok() error {
+	if !t.ValidateTiktokUrl() {
+		return errors.New("Invalid url. Please provide valid tiktok url")
+	}
 	err := t.getFirstCommentUrl()
 	if err != nil {
 		return err
@@ -178,4 +186,11 @@ func (t *TiktokSingleOption) processReplies(tiktokJson ResponseJson) {
 		})
 	}
 	t.Tiktok.Results = append(t.Tiktok.Results, res...)
+}
+
+func (t *TiktokSingleOption) ValidateTiktokUrl() bool {
+	if strings.Contains(t.TiktokUrl, "tiktok.com") && strings.Contains(t.TiktokUrl, "video") {
+		return true
+	}
+	return false
 }
