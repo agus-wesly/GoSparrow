@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
+	"time"
+
 	"github.com/agus-wesly/GoSparrow/pkg/core"
 	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 
@@ -60,21 +63,20 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		t.ExportToCSV()
 	}()
 
-	// TODO : Validate the twitter url
+	if !t.ValidateTweetUrl(t.TweetUrl) {
+		t.Log.Error("Invalid url. Please provide valid tweet url.")
+		os.Exit(1)
+	}
 
 	t.SetupToken()
-
-	// TODO : use timeout context, idk maybe 3 minutes is enough ?
-	ctx, acancel := core.CreateNewContext()
+	ctx, acancel := core.CreateNewContextWithTimeout(3 * time.Minute)
 	defer acancel()
-
 	err := chromedp.Run(ctx, t.AttachAuthToken())
 	if err != nil {
 		panic(err)
 	}
 
 	t.Context = &ctx
-
 	core.ListenEvent(ctx, "TweetDetail", func(byts []byte) {
 		var tweetJson Response
 		err := json.Unmarshal(byts, &tweetJson)
@@ -83,8 +85,13 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 			err = t.processTweetJSON(tweetJson)
 		}
 	}, nil)
-	t.handleSingleTweet()
-	t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
+	err = t.handleSingleTweet()
+	if err != nil {
+		t.Log.Error(err.Error())
+		os.Exit(1)
+	} else {
+		t.Log.Success("Finish scrapping. Total tweet received : ", len(t.TweetResults))
+	}
 }
 
 func (t *TweetSingleOption) scrollUntilBottom(ctx context.Context) error {
