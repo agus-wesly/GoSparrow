@@ -257,11 +257,3 @@ func cleanupContent(content string) string {
 	return cleanupContent(res)
 }
 
-func (t *Tweet) ValidateTweetUrl(s string) bool {
-	if strings.Contains(s, "x.com") || strings.Contains(s, "twitter.com") {
-		if strings.Contains(s, "status") {
-			return true
-		}
-	}
-	return false
-}

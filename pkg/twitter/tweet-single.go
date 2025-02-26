@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/agus-wesly/GoSparrow/pkg/core"
@@ -63,7 +64,7 @@ func (t *TweetSingleOption) BeginSingleTweet() {
 		t.ExportToCSV()
 	}()
 
-	if !t.ValidateTweetUrl(t.TweetUrl) {
+	if !t.ValidateTweetUrl() {
 		t.Log.Error("Invalid url. Please provide valid tweet url.")
 		os.Exit(1)
 	}
@@ -111,4 +112,13 @@ func (t *TweetSingleOption) scrollUntilBottom(ctx context.Context) error {
 		chromedp.Run(ctx, chromedp.Evaluate(`Math.round(window.scrollY) + window.innerHeight >= document.body.scrollHeight`, &isAlreadyOnTheBottom))
 	}
 	return nil
+}
+
+func (t *TweetSingleOption) ValidateTweetUrl() bool {
+	if strings.Contains(t.TweetUrl, "x.com") || strings.Contains(t.TweetUrl, "twitter.com") {
+		if strings.Contains(t.TweetUrl, "status") {
+			return true
+		}
+	}
+	return false
 }
