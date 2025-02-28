@@ -79,6 +79,7 @@ func (t *Tiktok) exportResultToCSV() (string, error) {
 	fileName := fmt.Sprintf("res-tiktok-%d.csv", currentTime.Unix())
 	os.WriteFile(fileName, buf.Bytes(), 0644)
 	t.Log.Success("Successfully exported to : ", fileName)
+	t.Log.Success("Thankyou for using GoSparrow 😃. Have Question? Reach me at : agustchannel@gmail.com")
 	return fileName, nil
 }
 

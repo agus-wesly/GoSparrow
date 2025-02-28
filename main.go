@@ -20,10 +20,6 @@ var foo []string
 
 var DEBUG bool = false
 
-// TODO :
-// - Default Mode change
-// - Typo in tiktok
-// - Credits when finish exporting
 
 func main() {
 	headless := flag.Bool("headless", true, "Specify if app run in the headless mode")

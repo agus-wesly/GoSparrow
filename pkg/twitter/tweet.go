@@ -240,6 +240,7 @@ func (t *Tweet) ExportToCSV() string {
 	fileName := fmt.Sprintf("res-twitter-%d.csv", currentTime.Unix())
 	os.WriteFile(fileName, buf.Bytes(), 0644)
 	t.Log.Success("Successfully exported in ", fileName)
+	t.Log.Success("Thankyou for using GoSparrow 😃. Have Question? Reach me at : agustchannel@gmail.com")
 	return fileName
 }
 
@@ -254,4 +255,3 @@ func cleanupContent(content string) string {
 	res := strings.Trim(content[idx:], " ")
 	return cleanupContent(res)
 }
-
