@@ -13,7 +13,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var IS_HEADLESS = false
+var IS_HEADLESS = true
 
 func CreateNewContext() (context.Context, context.CancelFunc) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],

@@ -19,7 +19,7 @@ type Tiktok struct {
 
 var (
 	SEARCH_MODE = "Search Tiktok Mode"
-	SINGLE_MODE = "Single Tikotk Mode"
+	SINGLE_MODE = "Single Tiktok Mode"
 )
 
 func (t *Tiktok) Setup() {
