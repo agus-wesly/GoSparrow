@@ -161,8 +161,6 @@ func (t *Tweet) openTweetPage(url string) chromedp.Tasks {
 	tasks := chromedp.Tasks{
 		network.Enable(),
 		chromedp.Navigate(url),
-		// todo : we need timeout in case this stuck
-		// because the user probably not entering valid twitter url
 		chromedp.WaitReady(`body [data-testid="tweetButtonInline"]`),
 	}
 	return tasks
