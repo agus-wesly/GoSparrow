@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+
 	"github.com/agus-wesly/GoSparrow/pkg/core"
+	"github.com/agus-wesly/GoSparrow/pkg/instagram"
 	"github.com/agus-wesly/GoSparrow/pkg/terminal"
 	"github.com/agus-wesly/GoSparrow/pkg/tiktok"
 	"github.com/agus-wesly/GoSparrow/pkg/twitter"
@@ -14,17 +16,24 @@ import (
 const (
 	TWITTER = "Twitter"
 	TIKTOK  = "Tiktok"
+	INSTAGRAM  = "Instagram"
 )
 
 var foo []string
 
-var DEBUG bool = false
+var DEBUG bool = true
 
 func main() {
 	headless := flag.Bool("headless", false, "Specify if app run in the headless mode")
 	flag.Parse()
 	core.IS_HEADLESS = *headless
 
+    ins := instagram.Instagram{}
+    ins.Begin()
+
+    if true {
+        return
+    }
 	promptHeader()
 	prompt := terminal.Select{
 		Opts:    []string{TWITTER, TIKTOK},
@@ -43,7 +52,11 @@ func main() {
 	} else if selectedSocialMedia == TIKTOK {
 		t := tiktok.Tiktok{}
 		t.Begin()
-	}
+	} else if selectedSocialMedia == INSTAGRAM {
+        //ins := instagram.Instagram{}
+        //ins.Begin()
+    }
+    
 }
 
 func promptHeader() {
